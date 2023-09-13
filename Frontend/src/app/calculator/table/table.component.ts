@@ -9,15 +9,17 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 })
 export class TableComponent implements OnInit{
   tableData: { [key: string]: any }[] = [
-    { name: 'John', age: 30 },
-    { name: 'Alice', age: 25 },
+    { name: 'John', age: 30, income: 0 },
+    { name: 'Alice', age: 25 , income: 100},
     // Add more rows as needed
   ];
   tableHeaders :{[key: string]: string }[] =[
     { value: 'name' },
     { value: 'age' },
+    { value: 'income'},
   ];
-
+  
+  IEwindow : boolean = false;
 
   constructor(private renderer: Renderer2) {}
 
@@ -141,5 +143,68 @@ export class TableComponent implements OnInit{
     window.URL.revokeObjectURL(url);
   }
 
+  toggleImportExportWin(){
+    this.IEwindow = !this.IEwindow;
+  }
+
+  // assuming input data has same format as table, first row is header
+  importFile(event: any) {
+    const fileInput = event.target;
+
+    if (fileInput.files && fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+
+      if (selectedFile.type === 'application/vnd.ms-excel' || selectedFile.type === 'text/csv') {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          // Parse the CSV data here and update tableData and tableHeaders
+          const csvData = e.target.result;
+          const rows = csvData.split('\n');
+          const headers : string[] = rows[0].split(',');
+
+          // Clear tableData and tableHeaders
+          this.tableData = [];
+          this.tableHeaders = [];
+
+          // Initialize an array to store the parsed data
+          const parsedData: { [key: string]: any }[] = [];
+
+          // Loop through the rows, starting from the second row (index 1)
+          for (let i = 1; i < rows.length; i++) {
+            const row = rows[i].split(',');
+            const rowData: { [key: string]: any } = {};
+
+            // Loop through the headers and assign values to the corresponding keys
+            for (let j = 0; j < headers.length; j++) {
+              const headerValue = headers[j];
+              rowData[headerValue] = row[j];
+            }
+
+            parsedData.push(rowData);
+          }
+
+          // Update tableData with the parsed data
+          parsedData.forEach((data) => {
+            this.tableData.push(data);
+          });
+
+          // Update tableHeaders with the headers
+          headers.forEach((header) => {
+            this.tableHeaders.push({ value: header });
+          });
+          for (const header of this.tableHeaders) {
+            header['editingValue'] = header['value'];
+          }
+          
+        };
+
+        reader.readAsText(selectedFile);
+        this.IEwindow = false;
+      } else {
+        console.error('Invalid file format. Please select a CSV file.');
+      }
+    }
+  }
 
 }

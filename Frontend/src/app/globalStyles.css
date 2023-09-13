@@ -46,3 +46,29 @@
     border-radius: 20%;
 
 }
+
+.clickable{
+    cursor: pointer;
+    background-color: rgb(154, 146, 109);
+    border-radius: 20%;
+    padding: 1vh;
+}
+.window{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    z-index: 2;
+    width: 20vw;
+    height: 20vh;
+    font-family: 'Calibri';
+    background-color: rgb(188, 187, 176);
+    border-radius: 20%;
+    align-items: center;
+    align-content: center;
+  }
+
+
+  .hidden{
+    display: none;
+  }
