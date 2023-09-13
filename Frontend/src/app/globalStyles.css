@@ -1,0 +1,48 @@
+.appContainer{
+    background-color: rgb(207, 208, 172);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+    min-width: 1080px;
+    min-height: 1920px;
+    
+}
+
+.contentContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* max-width: max-content; */
+    /* max-height: max-content; */
+}
+
+.bodyHorizontal{
+    flex-direction: row;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 50vw;
+    padding-top: 5vh;
+    
+}
+
+.title{
+    display: block;
+    font-size: 10vh;
+    font-family: 'Calibri';
+    text-align: left;
+}
+
+.titleMid{
+    position: relative;
+    flex-basis: auto;
+    display: block;
+    font-size: 5vh;
+    font-family: 'Calibri';
+    text-align: center;
+    cursor: pointer;
+    background-color: rgb(154, 146, 109);
+    border-radius: 20%;
+
+}
