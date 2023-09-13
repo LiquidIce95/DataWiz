@@ -1,11 +1,11 @@
 <div class="tableAppContainer">
     <div class="tableActions">
-        <div class="tableActionsText">clear table</div>
+        <div class="tableActionsText" (click)="clearTab()">clear table</div>
         <div class="tableActionsText" (click)="addColumn()">add column</div>
         <div class="tableActionsText" (click)="addRow()">add row</div>
         <div class="tableActionsText" (click)="delColumn()">delete column</div>
         <div class="tableActionsText" (click)="delRow()">delete row</div>
-        <div class="tableActionsText">import/export data</div>
+        <div class="tableActionsText" (click)="exportToExcel()">import/export data</div>
         <div class="tableActionsText">transform data</div>
         <div class="tableActionsText">options</div>
     </div>
@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th *ngFor="let header of tableHeaders">
-                      <input type="text" [(ngModel)]="header['value']">
+                        <input type="text" [ngModel]="header['editingValue']" (ngModelChange)="header['editingValue'] = $event; headerCleanup(header['value'], $event)">
                     </th>
                   </tr>
             </thead>

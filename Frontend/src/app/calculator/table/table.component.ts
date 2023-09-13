@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['../../globalStyles.css', './table.component.css']
 })
-export class TableComponent {
+export class TableComponent implements OnInit{
   tableData: { [key: string]: any }[] = [
     { name: 'John', age: 30 },
     { name: 'Alice', age: 25 },
@@ -15,6 +17,17 @@ export class TableComponent {
     { value: 'name' },
     { value: 'age' },
   ];
+
+
+  constructor(private renderer: Renderer2) {}
+
+  ngOnInit() {
+    // Initialize editingValue for headers with the same value as the actual header
+    for (const header of this.tableHeaders) {
+      header['editingValue'] = header['value'];
+    }
+  }
+  
 
   addColumn() {
     // Add a new column to the tableHeaders array
@@ -57,4 +70,53 @@ export class TableComponent {
       }
     }
   }
+
+  headerCleanup(oldHeader: string, newHeader: string) {
+
+    console.log('Old Header:', oldHeader);
+    console.log('New Header:', newHeader);    // Iterate through each row in tableData
+    for (let i = 0; i < this.tableData.length; i++) {
+      const rowData = this.tableData[i];
+      
+      // Check if the oldHeader exists in the row
+      if (oldHeader in rowData) {
+        // Copy the data from the old header to the new header
+        rowData[newHeader] = rowData[oldHeader];
+        
+        // Delete the old header data
+        delete rowData[oldHeader];
+      }
+    }
+
+    // After cleanup, update the header value
+    const index = this.tableHeaders.findIndex(header => header['value'] === oldHeader);
+    if (index !== -1) {
+      this.tableHeaders[index]['value'] = newHeader;
+    }
+
+
+  }
+
+
+  clearTab() {
+    // Clear cell values
+    for (let i = 0; i < this.tableData.length; i++) {
+      const rowData = this.tableData[i];
+      for (const header of this.tableHeaders) {
+        rowData[header['value']] = '';
+      }
+    }
+  
+    // Clear header editing values
+    for (const header of this.tableHeaders) {
+      header['editingValue'] = '';
+    }
+  }
+  
+  exportToExcel() {
+    // Convert tableData to worksheet
+    
+  }
+
+
 }
