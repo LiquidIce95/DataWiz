@@ -93,8 +93,6 @@ export class TableComponent implements OnInit{
     if (index !== -1) {
       this.tableHeaders[index]['value'] = newHeader;
     }
-
-
   }
 
 
@@ -113,9 +111,34 @@ export class TableComponent implements OnInit{
     }
   }
   
-  exportToExcel() {
-    // Convert tableData to worksheet
-    
+  exportToCSV() {
+    // Prepare the CSV data
+    const headerRow = this.tableHeaders.map(header => header['value']).join(',');
+    const csvRows = this.tableData.map(row => {
+      return this.tableHeaders.map(header => row[header['value']]).join(',');
+    });
+
+    // Combine header and rows into a single CSV string
+    const csvData = [headerRow, ...csvRows].join('\n');
+
+    // Create a Blob with the CSV data
+    const blob = new Blob([csvData], { type: 'text/csv' });
+
+    // Create a URL for the blob
+    const url = window.URL.createObjectURL(blob);
+
+    // Create an anchor element for downloading
+    const a = this.renderer.createElement('a');
+    this.renderer.setAttribute(a, 'href', url);
+    this.renderer.setAttribute(a, 'download', 'tableData.csv'); // Specify the file name here
+
+    // Trigger a click event on the anchor element
+    this.renderer.appendChild(document.body, a);
+    a.click();
+
+    // Clean up
+    this.renderer.removeChild(document.body, a);
+    window.URL.revokeObjectURL(url);
   }
 
 
