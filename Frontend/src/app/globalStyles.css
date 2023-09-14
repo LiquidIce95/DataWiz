@@ -51,8 +51,8 @@
 
 .clickable{
     cursor: pointer;
-    background-color: rgb(154, 146, 109);
-    border-radius: 20%;
+    background-color: rgb(225, 208, 132);
+    border-radius: 2vw;
     padding: 1vh;
 }
 .window{
@@ -64,8 +64,9 @@
     width: 20vw;
     height: 20vh;
     font-family: 'Calibri';
-    background-color: rgb(188, 187, 176);
-    border-radius: 20%;
+    background-color: rgb(242, 241, 228);
+    border: 0.2vw solid black;    
+    border-radius: 5vh;
     align-items: center;
     align-content: center;
   }
