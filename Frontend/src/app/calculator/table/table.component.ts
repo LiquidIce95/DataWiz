@@ -18,6 +18,12 @@ export class TableComponent implements OnInit{
     { value: 'age' },
     { value: 'income'},
   ];
+
+  tableTypes :{[key: string]: string }[] =[
+    { value: 'nominal' },
+    { value: 'metric' },
+    { value: 'metric'},
+  ];  
   
   IEwindow : boolean = false;
 
@@ -35,7 +41,7 @@ export class TableComponent implements OnInit{
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
     this.tableHeaders.push({ value: newColumnName });
-
+    this.tableTypes.push({value: 'nominal'})
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {
       this.tableData[i][newColumnName] = ''; // Set the new column to an empty string
@@ -196,15 +202,48 @@ export class TableComponent implements OnInit{
           for (const header of this.tableHeaders) {
             header['editingValue'] = header['value'];
           }
+
+          
           
         };
 
         reader.readAsText(selectedFile);
         this.IEwindow = false;
+
+        this.tableTypes = [];
+        // now we detect the types
+        this.tableHeaders.forEach((header) => {
+          const data : any[] = this.getColumnValues(header['value']);
+          const type : string = this.deduceColumnType(data);
+          this.tableTypes.push({value:type});
+        });
+        
       } else {
         console.error('Invalid file format. Please select a CSV file.');
       }
     }
   }
+
+  getColumnValues(columnName: string): any[] {
+      return this.tableData.map(row => row[columnName]);
+  }
+
+  deduceColumnType(columnValues: any[]): string {
+    if (columnValues.every(value => !isNaN(value))) {
+        return 'metric';
+    }
+    return 'nominal'; // Default type
+  }
+
+  onTypeChange(selectedType: string, index: number) {
+    if (selectedType === 'auto') {
+      const columnName = this.tableHeaders[index]['value'];
+      const columnValues = this.getColumnValues(columnName);
+      selectedType = this.deduceColumnType(columnValues);
+    }
+    this.tableTypes[index]['value'] = selectedType;
+  }
+  
+  
 
 }

@@ -20,6 +20,17 @@
         <table>
             <thead>
                 <tr>
+                    <th *ngFor="let Type of tableTypes; let i = index">
+                        {{ Type['value'] }}
+                        <select (change)="onTypeChange($event.target.value, i)">
+                            <option value="auto">auto</option>
+                            <option value="metric">metric</option>
+                            <option value="nominal">nominal</option>
+                            <option value="ordinal">ordinal</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
                     <th *ngFor="let header of tableHeaders">
                         <input type="text" [ngModel]="header['editingValue']" (ngModelChange)="header['editingValue'] = $event; headerCleanup(header['value'], $event)">
                     </th>
