@@ -1,5 +1,5 @@
 .appContainer{
-    background-color: rgb(207, 208, 172);
+    background-color: rgb(235, 236, 213);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -42,8 +42,10 @@
     font-family: 'Calibri';
     text-align: center;
     cursor: pointer;
-    background-color: rgb(154, 146, 109);
-    border-radius: 20%;
+    background-color: rgb(225, 208, 132);
+    border-radius: 5vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
 
 }
 

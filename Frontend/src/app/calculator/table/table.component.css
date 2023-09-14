@@ -66,9 +66,10 @@ table {
     flex-basis: auto;
     display: block;
 
-    background-color: rgb(154, 146, 109);
-    border-radius: 20%;
-    padding: 1vh;
+    background-color: rgb(225, 208, 132);
+    border-radius: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
 
 }
 

@@ -4,9 +4,9 @@ import {CalculatorComponent } from './calculator/calculator.component'
 import { PricesComponent } from './prices/prices.component';
 
 const routes: Routes = [
-  {path: 'calculator', component: CalculatorComponent},
+  {path: 'statisticscalculator', component: CalculatorComponent},
   { path: 'prices', component: PricesComponent },
-  { path: '', redirectTo: '/calculator', pathMatch: 'full' },
+  { path: '', redirectTo: '/statisticscalculator', pathMatch: 'full' },
 
 ];
 
