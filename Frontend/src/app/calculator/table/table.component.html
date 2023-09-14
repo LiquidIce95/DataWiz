@@ -21,8 +21,7 @@
             <thead>
                 <tr>
                     <th *ngFor="let Type of tableTypes; let i = index">
-                        {{ Type['value'] }}
-                        <select (change)="onTypeChange($event.target.value, i)">
+                        <select #selectElem (change)="onTypeChange(selectElem.value, i)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>
                             <option value="nominal">nominal</option>
