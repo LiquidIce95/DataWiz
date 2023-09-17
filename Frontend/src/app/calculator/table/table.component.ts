@@ -71,6 +71,7 @@ export class TableComponent implements OnInit{
   
       // Remove the column from the tableHeaders
       this.tableHeaders.pop();
+      this.tableTypes.pop();
   
       // Remove the corresponding data entries in all rows
       for (let i = 0; i < this.tableData.length; i++) {
