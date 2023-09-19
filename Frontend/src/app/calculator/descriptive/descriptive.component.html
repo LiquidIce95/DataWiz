@@ -1,3 +1,38 @@
 <div>
-    descriptive settings
+    <div class="tutText">3. Select Inputs</div>
+
+    <div>
+        <div class="smalltitle">metric variables:</div>
+        <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
+          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'metric'">
+            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          </div>
+        </ng-container>
+      </div>    
+      
+      <div>
+        <div class="smalltitle">ordinal variables:</div>
+        <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
+          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'ordinal'">
+            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          </div>
+        </ng-container>
+      </div>
+      
+      <div>
+        <div class="smalltitle">nominal variables:</div>
+        <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
+          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'nominal'">
+            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          </div>
+        </ng-container>
+      </div>
+      
+      
 </div>
+
+<div class="tutText">4. View Results</div>
+<div class="smalltitle">average</div>
+<div *ngFor="let key of getAverageKeys()">
+    {{ key }} : {{ averages[key] }}
+  </div>

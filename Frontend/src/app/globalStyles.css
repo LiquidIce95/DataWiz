@@ -75,3 +75,22 @@
   .hidden{
     display: none;
   }
+
+  .smalltitle{
+    font-family: 'Calibri';
+    position: relative;
+    flex-basis: auto;
+    display: block;
+
+    background-color: rgb(225, 208, 132);
+    border-radius: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+
+  .tutText{
+    font-size: 3vh;
+    font-family: 'Calibri';
+    color: red;
+    padding: 3vh;
+}

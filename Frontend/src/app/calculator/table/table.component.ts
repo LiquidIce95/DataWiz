@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-
+import { TableDataService } from '../table.service';
 
 
 @Component({
@@ -8,30 +8,14 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
   styleUrls: ['../../globalStyles.css', './table.component.css']
 })
 export class TableComponent implements OnInit{
-  tableData: { [key: string]: any }[] = [
-    { name: 'John', age: 30, income: 0 },
-    { name: 'Alice', age: 25 , income: 100},
-    // Add more rows as needed
-  ];
-  tableHeaders :{[key: string]: string }[] =[
-    { value: 'name' },
-    { value: 'age' },
-    { value: 'income'},
-  ];
-
-  tableTypes :{[key: string]: string }[] =[
-    { value: 'nominal' },
-    { value: 'metric' },
-    { value: 'metric'},
-  ];  
   
   IEwindow : boolean = false;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2,public tableDataService: TableDataService) {}
 
   ngOnInit() {
     // Initialize editingValue for headers with the same value as the actual header
-    for (const header of this.tableHeaders) {
+    for (const header of this.tableDataService.tableHeaders) {
       header['editingValue'] = header['value'];
     }
   }
@@ -40,42 +24,42 @@ export class TableComponent implements OnInit{
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
-    this.tableHeaders.push({ value: newColumnName });
-    this.tableTypes.push({value: 'nominal'})
+    this.tableDataService.tableHeaders.push({ value: newColumnName });
+    this.tableDataService.tableTypes.push({value: 'nominal'})
     // Initialize data entries for the new column in all rows
-    for (let i = 0; i < this.tableData.length; i++) {
-      this.tableData[i][newColumnName] = ''; // Set the new column to an empty string
+    for (let i = 0; i < this.tableDataService.tableData.length; i++) {
+      this.tableDataService.tableData[i][newColumnName] = ''; // Set the new column to an empty string
     }
 
   }
   addRow() {
     const newRow: { [key: string]: string } = {}; // Define the type of newRow
   
-    for (const header of this.tableHeaders) {
+    for (const header of this.tableDataService.tableHeaders) {
       newRow[header['value']] = ''; // Access header.value directly
     }
   
     // Add the new row to the tableData array
-    this.tableData.push(newRow);
+    this.tableDataService.tableData.push(newRow);
   }
 
   delRow() {
-    if (this.tableData.length > 0) {
-      this.tableData.pop(); // Removes the last row
+    if (this.tableDataService.tableData.length > 0) {
+      this.tableDataService.tableData.pop(); // Removes the last row
     }
   }
   
   delColumn() {
-    if (this.tableHeaders.length > 0) {
-      const lastColumnName = this.tableHeaders[this.tableHeaders.length - 1]['value'];
+    if (this.tableDataService.tableHeaders.length > 0) {
+      const lastColumnName = this.tableDataService.tableHeaders[this.tableDataService.tableHeaders.length - 1]['value'];
   
       // Remove the column from the tableHeaders
-      this.tableHeaders.pop();
-      this.tableTypes.pop();
+      this.tableDataService.tableHeaders.pop();
+      this.tableDataService.tableTypes.pop();
   
       // Remove the corresponding data entries in all rows
-      for (let i = 0; i < this.tableData.length; i++) {
-        delete this.tableData[i][lastColumnName];
+      for (let i = 0; i < this.tableDataService.tableData.length; i++) {
+        delete this.tableDataService.tableData[i][lastColumnName];
       }
     }
   }
@@ -84,8 +68,8 @@ export class TableComponent implements OnInit{
 
     console.log('Old Header:', oldHeader);
     console.log('New Header:', newHeader);    // Iterate through each row in tableData
-    for (let i = 0; i < this.tableData.length; i++) {
-      const rowData = this.tableData[i];
+    for (let i = 0; i < this.tableDataService.tableData.length; i++) {
+      const rowData = this.tableDataService.tableData[i];
       
       // Check if the oldHeader exists in the row
       if (oldHeader in rowData) {
@@ -98,33 +82,33 @@ export class TableComponent implements OnInit{
     }
 
     // After cleanup, update the header value
-    const index = this.tableHeaders.findIndex(header => header['value'] === oldHeader);
+    const index = this.tableDataService.tableHeaders.findIndex(header => header['value'] === oldHeader);
     if (index !== -1) {
-      this.tableHeaders[index]['value'] = newHeader;
+      this.tableDataService.tableHeaders[index]['value'] = newHeader;
     }
   }
 
 
   clearTab() {
     // Clear cell values
-    for (let i = 0; i < this.tableData.length; i++) {
-      const rowData = this.tableData[i];
-      for (const header of this.tableHeaders) {
+    for (let i = 0; i < this.tableDataService.tableData.length; i++) {
+      const rowData = this.tableDataService.tableData[i];
+      for (const header of this.tableDataService.tableHeaders) {
         rowData[header['value']] = '';
       }
     }
   
     // Clear header editing values
-    for (const header of this.tableHeaders) {
+    for (const header of this.tableDataService.tableHeaders) {
       header['editingValue'] = '';
     }
   }
   
   exportToCSV() {
     // Prepare the CSV data
-    const headerRow = this.tableHeaders.map(header => header['value']).join(',');
-    const csvRows = this.tableData.map(row => {
-      return this.tableHeaders.map(header => row[header['value']]).join(',');
+    const headerRow = this.tableDataService.tableHeaders.map(header => header['value']).join(',');
+    const csvRows = this.tableDataService.tableData.map(row => {
+      return this.tableDataService.tableHeaders.map(header => row[header['value']]).join(',');
     });
 
     // Combine header and rows into a single CSV string
@@ -171,8 +155,8 @@ export class TableComponent implements OnInit{
           const headers : string[] = rows[0].split(',');
 
           // Clear tableData and tableHeaders
-          this.tableData = [];
-          this.tableHeaders = [];
+          this.tableDataService.tableData = [];
+          this.tableDataService.tableHeaders = [];
 
           // Initialize an array to store the parsed data
           const parsedData: { [key: string]: any }[] = [];
@@ -193,14 +177,14 @@ export class TableComponent implements OnInit{
 
           // Update tableData with the parsed data
           parsedData.forEach((data) => {
-            this.tableData.push(data);
+            this.tableDataService.tableData.push(data);
           });
 
           // Update tableHeaders with the headers
           headers.forEach((header) => {
-            this.tableHeaders.push({ value: header });
+            this.tableDataService.tableHeaders.push({ value: header });
           });
-          for (const header of this.tableHeaders) {
+          for (const header of this.tableDataService.tableHeaders) {
             header['editingValue'] = header['value'];
           }
 
@@ -211,12 +195,12 @@ export class TableComponent implements OnInit{
         reader.readAsText(selectedFile);
         this.IEwindow = false;
 
-        this.tableTypes = [];
+        this.tableDataService.tableTypes = [];
         // now we detect the types
-        this.tableHeaders.forEach((header) => {
+        this.tableDataService.tableHeaders.forEach((header) => {
           const data : any[] = this.getColumnValues(header['value']);
           const type : string = this.deduceColumnType(data);
-          this.tableTypes.push({value:type});
+          this.tableDataService.tableTypes.push({value:type});
         });
         
       } else {
@@ -226,7 +210,7 @@ export class TableComponent implements OnInit{
   }
 
   getColumnValues(columnName: string): any[] {
-      return this.tableData.map(row => row[columnName]);
+      return this.tableDataService.tableData.map(row => row[columnName]);
   }
 
   deduceColumnType(columnValues: any[]): string {
@@ -238,13 +222,13 @@ export class TableComponent implements OnInit{
 
   onTypeChange(selectedType: string, index: number) {
     if (selectedType === 'auto') {
-      const columnName = this.tableHeaders[index]['value'];
+      const columnName = this.tableDataService.tableHeaders[index]['value'];
       const columnValues = this.getColumnValues(columnName);
       selectedType = this.deduceColumnType(columnValues);
     }
-    this.tableTypes[index]['value'] = selectedType;
+    this.tableDataService.tableTypes[index]['value'] = selectedType;
   }
-  
+
   
 
 }

@@ -1,7 +1,7 @@
 <div class="contentContainer">
     <div class="tutText">1. Select or Modify data!</div>
     <app-table></app-table>
-    <div class="tutText">2. Select Computation</div>
+    <div class="tutText">2. Select Category</div>
     <select (change)="onChange($event)">
         <option value="/statisticscalculator/descriptive">descriptive</option>
         <option value="/statisticscalculator/diagrams">diagrams</option>
@@ -21,10 +21,7 @@
         <option>Measurement system analysis</option>
     </select>
     <div>
-        <div >click me</div>
         <router-outlet></router-outlet>
     </div>
-    <div class="tutText">3. Select Inputs</div>
-    <div class="tutText">4. View Results</div>
 
 </div>

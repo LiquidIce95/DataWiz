@@ -20,7 +20,7 @@
         <table>
             <thead>
                 <tr>
-                    <th *ngFor="let Type of tableTypes; let i = index">
+                    <th *ngFor="let Type of tableDataService.tableTypes; let i = index">
                         <select #selectElem (change)="onTypeChange(selectElem.value, i)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>
@@ -30,14 +30,14 @@
                     </th>
                 </tr>
                 <tr>
-                    <th *ngFor="let header of tableHeaders">
+                    <th *ngFor="let header of tableDataService.tableHeaders">
                         <input type="text" [ngModel]="header['editingValue']" (ngModelChange)="header['editingValue'] = $event; headerCleanup(header['value'], $event)">
                     </th>
                   </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of tableData">
-                    <td *ngFor="let header of tableHeaders">
+                <tr *ngFor="let row of tableDataService.tableData">
+                    <td *ngFor="let header of tableDataService.tableHeaders">
                         <input type="text" [(ngModel)]="row[header['value']]">
                     </td>
                 </tr>
