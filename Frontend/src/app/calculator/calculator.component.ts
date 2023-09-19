@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calculator',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['../globalStyles.css','./calculator.component.css']
 })
 export class CalculatorComponent {
-
+  constructor(private router: Router) {}
+  
+  onChange(event: any) {
+    this.router.navigate([event.target.value]);
+  }
+  
 }

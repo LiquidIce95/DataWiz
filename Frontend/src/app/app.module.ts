@@ -7,6 +7,8 @@ import { CalculatorComponent } from './calculator/calculator.component';
 import { PricesComponent } from './prices/prices.component';
 import { TableComponent } from './calculator/table/table.component';
 import { FormsModule } from '@angular/forms';
+import { DescriptiveComponent } from './calculator/descriptive/descriptive.component';
+import { DiagramsComponent } from './calculator/diagrams/diagrams.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { FormsModule } from '@angular/forms';
     CalculatorComponent,
     PricesComponent,
     TableComponent,
+    DescriptiveComponent,
+    DiagramsComponent,
   ],
   imports: [
     BrowserModule,
