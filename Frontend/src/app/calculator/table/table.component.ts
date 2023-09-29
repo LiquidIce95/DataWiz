@@ -20,6 +20,8 @@ export class TableComponent implements OnInit{
     }
   }
   
+  // TODO: when editing table or importing data, numbers should be stored as numbers otherwise
+  // computations are wrong, 
   // TABLE -----------------------------------------------------------------------------------------
   addColumn() {
     // Add a new column to the tableHeaders array

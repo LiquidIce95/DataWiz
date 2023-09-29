@@ -11,7 +11,7 @@ export class DescriptiveComponent {
   constructor(public tableDataService: TableDataService) {}
   selectedVariables: { [key: string]: boolean } = {};
 
-
+  // TODOS: Computations must ignore empty rows
 
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   averages: { [key: string]: number } = {};
@@ -34,12 +34,12 @@ export class DescriptiveComponent {
   calcAvg(header : { [key: string]: any },index : number ,averages : { [key:string] : number},
     sums:{ [key: string]: number },counts: { [key: string]: number }) : void{
     const key = header['value'];
-      this.tableDataService.tableData.forEach(data => {
-        this.calcSumsCounts(data,key,index,sums,counts);
-      });
+    this.tableDataService.tableData.forEach(data => {
+      this.calcSumsCounts(data,key,index,sums,counts);
+    });
 
-      // adjusting 
-      averages[key] = sums[key] / counts[key]
+    // adjusting 
+    averages[key] = sums[key] / counts[key]
 
   }
 
@@ -50,6 +50,7 @@ export class DescriptiveComponent {
     let counts: { [key: string]: number } = {};
     let averages: { [key: string]: number } = {};
 
+    console.log(this.tableDataService.tableData)
     // compute the Average for each header
     this.tableDataService.tableHeaders.forEach((header,index)=>{
       // iterate through all data rows
@@ -62,6 +63,7 @@ export class DescriptiveComponent {
   
 
   getAverageKeys(): string[] {
+    this.averages = {};
     this.averages = this.getAverages();
     return Object.keys(this.averages);
   }  
