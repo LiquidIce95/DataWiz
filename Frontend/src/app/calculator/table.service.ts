@@ -4,10 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class TableDataService {
+  // Cell entries first dimension is row then the key correspond to a header 
+  // the value returned is the value for the (header,row) pair
   tableData: { [key: string]: any }[] = [
     { name: 'John', age: 30, income: 0 },
     { name: 'Alice', age: 25, income: 100 },
-    // Add more rows as needed
   ];
 
   tableHeaders: { [key: string]: string }[] = [

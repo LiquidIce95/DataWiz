@@ -20,7 +20,7 @@ export class TableComponent implements OnInit{
     }
   }
   
-
+  // TABLE -----------------------------------------------------------------------------------------
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
@@ -104,6 +104,8 @@ export class TableComponent implements OnInit{
     }
   }
   
+
+  // IMPORT EXPORT FEATURE--------------------------------------------------------------------------
   exportToCSV() {
     // Prepare the CSV data
     const headerRow = this.tableDataService.tableHeaders.map(header => header['value']).join(',');
@@ -134,9 +136,82 @@ export class TableComponent implements OnInit{
     window.URL.revokeObjectURL(url);
   }
 
+
   toggleImportExportWin(){
     this.IEwindow = !this.IEwindow;
   }
+
+  UpdateTable(parsedData:{ [key: string]: any }[],headers:string[]){
+    // Update tableData with the parsed data
+    parsedData.forEach((data) => {
+      this.tableDataService.tableData.push(data);
+    });
+
+    // Update tableHeaders with the headers
+    headers.forEach((header) => {
+      this.tableDataService.tableHeaders.push({ value: header });
+    });
+    for (const header of this.tableDataService.tableHeaders) {
+      header['editingValue'] = header['value'];
+    }
+  }
+
+  OnLoadImport(e:any){
+    // Initialize an array to store the parsed data
+    const parsedData: { [key: string]: any }[] = [];
+    // Parse the CSV data here and update tableData and tableHeaders
+    const csvData = e.target.result;
+    const rows = csvData.split('\n');
+    const headers : string[] = rows[0].split(',');
+
+    // Clear tableData and tableHeaders
+    this.tableDataService.tableData = [];
+    this.tableDataService.tableHeaders = [];
+
+    
+
+    // Loop through the rows, starting from the second row (index 1)
+    for (let i = 1; i < rows.length-1; i++) {
+      const row = rows[i].split(',');
+      const rowData: { [key: string]: any } = {};
+
+      // Loop through the headers and assign values to the corresponding keys
+      for (let j = 0; j < headers.length; j++) {
+        const headerValue = headers[j];
+        rowData[headerValue] = row[j];
+      }
+
+      parsedData.push(rowData);
+    }
+
+    this.UpdateTable(parsedData,headers);
+
+  }
+
+  getColumnValues(columnName: string): any[] {
+    return this.tableDataService.tableData.map(row => row[columnName]);
+  }
+
+  deduceColumnType(columnValues: any[]): string {
+    if (columnValues.every(value => !isNaN(value))) {
+        return 'metric';
+    }
+    return 'nominal'; // Default type
+  }
+
+  TypeDetect(reader : FileReader,selectedFile:any){
+    this.IEwindow = false;
+
+    this.tableDataService.tableTypes = [];
+    // now we detect the types
+    this.tableDataService.tableHeaders.forEach((header) => {
+      const data : any[] = this.getColumnValues(header['value']);
+      const type : string = this.deduceColumnType(data);
+      this.tableDataService.tableTypes.push({value:type});
+    });
+  }
+
+
 
   // assuming input data has same format as table, first row is header
   importFile(event: any) {
@@ -149,59 +224,14 @@ export class TableComponent implements OnInit{
         const reader = new FileReader();
 
         reader.onload = (e: any) => {
-          // Parse the CSV data here and update tableData and tableHeaders
-          const csvData = e.target.result;
-          const rows = csvData.split('\n');
-          const headers : string[] = rows[0].split(',');
-
-          // Clear tableData and tableHeaders
-          this.tableDataService.tableData = [];
-          this.tableDataService.tableHeaders = [];
-
-          // Initialize an array to store the parsed data
-          const parsedData: { [key: string]: any }[] = [];
-
-          // Loop through the rows, starting from the second row (index 1)
-          for (let i = 1; i < rows.length; i++) {
-            const row = rows[i].split(',');
-            const rowData: { [key: string]: any } = {};
-
-            // Loop through the headers and assign values to the corresponding keys
-            for (let j = 0; j < headers.length; j++) {
-              const headerValue = headers[j];
-              rowData[headerValue] = row[j];
-            }
-
-            parsedData.push(rowData);
-          }
-
-          // Update tableData with the parsed data
-          parsedData.forEach((data) => {
-            this.tableDataService.tableData.push(data);
-          });
-
-          // Update tableHeaders with the headers
-          headers.forEach((header) => {
-            this.tableDataService.tableHeaders.push({ value: header });
-          });
-          for (const header of this.tableDataService.tableHeaders) {
-            header['editingValue'] = header['value'];
-          }
-
           
-          
+          this.OnLoadImport(e);
+          this.TypeDetect(reader,selectedFile);
+
         };
 
         reader.readAsText(selectedFile);
-        this.IEwindow = false;
 
-        this.tableDataService.tableTypes = [];
-        // now we detect the types
-        this.tableDataService.tableHeaders.forEach((header) => {
-          const data : any[] = this.getColumnValues(header['value']);
-          const type : string = this.deduceColumnType(data);
-          this.tableDataService.tableTypes.push({value:type});
-        });
         
       } else {
         console.error('Invalid file format. Please select a CSV file.');
@@ -209,16 +239,9 @@ export class TableComponent implements OnInit{
     }
   }
 
-  getColumnValues(columnName: string): any[] {
-      return this.tableDataService.tableData.map(row => row[columnName]);
-  }
+  
 
-  deduceColumnType(columnValues: any[]): string {
-    if (columnValues.every(value => !isNaN(value))) {
-        return 'metric';
-    }
-    return 'nominal'; // Default type
-  }
+  
 
   onTypeChange(selectedType: string, index: number) {
     if (selectedType === 'auto') {

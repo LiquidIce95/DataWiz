@@ -10,28 +10,52 @@ import { TableDataService } from '../table.service';
 export class DescriptiveComponent {
   constructor(public tableDataService: TableDataService) {}
   selectedVariables: { [key: string]: boolean } = {};
+
+
+
+  // AVERAGE COMPUTATION------------------------------------------------------------------------------
   averages: { [key: string]: number } = {};
 
-  getAverages() {
+  // computes the sum of the entries of a header and counts how many entries it had
+  calcSumsCounts(data : { [key: string]: any } ,key : string, index : number, 
+    sums :{ [key: string]: number }, counts : { [key: string]: number }) : void{
+
+    // check if user selected the variable for computation and if its type is metric
+    if(this.tableDataService.tableTypes[index]['value'] === 'metric' && this.selectedVariables[key]) {
+      if(data[key] !== null && !isNaN(data[key])) {
+        sums[key] = (sums[key] || 0) + data[key];
+        counts[key] = (counts[key] || 0) + 1;
+      }
+    }
+  }
+
+  // computes the acutal average for a given header with the index referring to the header
+  // stores data directly into the averages parameter
+  calcAvg(header : { [key: string]: any },index : number ,averages : { [key:string] : number},
+    sums:{ [key: string]: number },counts: { [key: string]: number }) : void{
+    const key = header['value'];
+      this.tableDataService.tableData.forEach(data => {
+        this.calcSumsCounts(data,key,index,sums,counts);
+      });
+
+      // adjusting 
+      averages[key] = sums[key] / counts[key]
+
+  }
+
+  // TODO: TESTING
+  // computes the averages for the selected metric variables
+  getAverages() : { [key: string]: number } {
     let sums: { [key: string]: number } = {};
     let counts: { [key: string]: number } = {};
-  
-    this.tableDataService.tableData.forEach(data => {
-      this.tableDataService.tableHeaders.forEach((header, index) => {
-        const key = header['value'];
-        if(this.tableDataService.tableTypes[index]['value'] === 'metric' && this.selectedVariables[key]) {
-          if(data[key] !== null && !isNaN(data[key])) {
-            sums[key] = (sums[key] || 0) + data[key];
-            counts[key] = (counts[key] || 0) + 1;
-          }
-        }
-      });
-    });
-  
     let averages: { [key: string]: number } = {};
-    Object.keys(sums).forEach(key => {
-      averages[key] = sums[key] / counts[key];
-    });
+
+    // compute the Average for each header
+    this.tableDataService.tableHeaders.forEach((header,index)=>{
+      // iterate through all data rows
+      this.calcAvg(header,index,averages,sums,counts);
+
+    })
   
     return averages;
   }
@@ -41,4 +65,12 @@ export class DescriptiveComponent {
     this.averages = this.getAverages();
     return Object.keys(this.averages);
   }  
+
+
+  // MEDIAN COMPUTATION----------------------------------------------------------------------------------
+  medians: {[key: string]: number} = {};
+
+
+
+
 }
