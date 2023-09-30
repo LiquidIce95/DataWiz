@@ -31,7 +31,6 @@ export class TableDataService {
   getColumnValues(columnName: string): any[] {
     return this.tableData.map(row => row[columnName]).filter(val => val !== undefined && val !== '');
 
-    
   }
 
   
@@ -62,6 +61,8 @@ export class TableDataService {
       return inputValue;
     }
   }
+
+  
   
 
 }

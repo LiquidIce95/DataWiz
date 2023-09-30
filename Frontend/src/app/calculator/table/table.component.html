@@ -2,9 +2,13 @@
 <div class="tableAppContainer">
     <input class="hidden" type="file" #fileInput (change)="importFile($event)" accept=".csv">
     <div class="window" *ngIf="IEwindow"> 
+        <div class="clickable" (click)="toggleImportExportWin()">🗙</div>
         <div class="clickable" (click)="exportToCSV()">export table as CSV</div>
         <div class="clickable" (click)="fileInput.click()">import CSV for table</div>
-        <div class="clickable" (click)="toggleImportExportWin()">🗙</div>
+    </div>
+    <div class="window" *ngIf="TWindow"> 
+        <div class="clickable" (click)="toggleTransData()">🗙</div>
+        <app-transform></app-transform>
     </div>
     <div class="tableActions">
         <div class="tableActionsText" (click)="clearTab()">clear table</div>
@@ -13,8 +17,7 @@
         <div class="tableActionsText" (click)="delColumn()">delete column</div>
         <div class="tableActionsText" (click)="delRow()">delete row</div>
         <div class="tableActionsText" (click)="toggleImportExportWin()">import/export data</div>
-        <div class="tableActionsText">transform data</div>
-        <div class="tableActionsText">options</div>
+        <div class="tableActionsText" (click)="toggleTransData()">transform data</div>
     </div>
     <div class="tableContainer">
         <table>

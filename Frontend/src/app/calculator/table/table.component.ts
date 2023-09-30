@@ -102,9 +102,16 @@ export class TableComponent{
     this.tableDataService.tableTypes[index] = selectedType;
   }
 
+  // DATA TRANSFORM FEATURE------------------------------------------------------------------------
+  TWindow = false;
+  toggleTransData(){
+    this.TWindow = ! this.TWindow;
+  }
+
+
   // IMPORT EXPORT FEATURE--------------------------------------------------------------------------
   IEwindow : boolean = false;
-
+  delimiter : string = ',';
   
   exportToCSV() {
     // Prepare the CSV data
@@ -166,7 +173,7 @@ export class TableComponent{
     // Parse the CSV data here and update tableData and tableHeaders
     const csvData = e.target.result;
     const rows = csvData.split('\n');
-    const headers : string[] = rows[0].split(',');
+    const headers : string[] = rows[0].split(this.delimiter);
 
     // Clear tableData and tableHeaders
     this.tableDataService.tableData = [];
@@ -176,7 +183,7 @@ export class TableComponent{
 
     // Loop through the rows, starting from the second row (index 1)
     for (let i = 1; i < rows.length; i++) {
-      const row = rows[i].split(',');
+      const row = rows[i].split(this.delimiter);
       const rowData: { [key: string]: any } = {};
 
       // Loop through the headers and assign values to the corresponding keys

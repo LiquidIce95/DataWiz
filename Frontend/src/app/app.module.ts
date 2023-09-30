@@ -9,6 +9,7 @@ import { TableComponent } from './calculator/table/table.component';
 import { FormsModule } from '@angular/forms';
 import { DescriptiveComponent } from './calculator/descriptive/descriptive.component';
 import { DiagramsComponent } from './calculator/diagrams/diagrams.component';
+import { TransformComponent } from './calculator/table/transform/transform.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DiagramsComponent } from './calculator/diagrams/diagrams.component';
     TableComponent,
     DescriptiveComponent,
     DiagramsComponent,
+    TransformComponent,
   ],
   imports: [
     BrowserModule,
