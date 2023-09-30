@@ -16,11 +16,30 @@ export class DescriptiveComponent {
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   averages: { [key: string]: (number | undefined)} = {};
 
+  // deltes old headers in the selectedvariables dict
+  cleanSelectedVariables() {
+    // Loop through all the keys in selectedVariables
+    for (const key in this.selectedVariables) {
+      // Check if this key exists in tableDataService.tableHeaders
+      if (this.tableDataService.tableHeaders.indexOf(key) === -1) {
+        // Key does not exist, so delete it from selectedVariables
+        delete this.selectedVariables[key];
+      }
+    }
+  }
   // computes the averages for the selected metric variables
   getAverages() : void {
 
     this.averages = {};
+    this.cleanSelectedVariables();
+    
     console.log(this.tableDataService.tableData)
+
+    for (const key in this.selectedVariables) {
+      if (Object.prototype.hasOwnProperty.call(this.selectedVariables, key)) {
+        console.log(`Key: ${key}, Value: ${this.selectedVariables[key]}`);
+      }
+    }
     // compute the Average for each header
     this.tableDataService.tableHeaders.forEach((header,index)=>{
       

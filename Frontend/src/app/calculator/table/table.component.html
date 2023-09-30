@@ -32,7 +32,7 @@
                 <tr>
                     <!--IMPORTANT: we iterate through tableTypes because otherwise angualr would rerender on each change!!! -->
                     <th *ngFor="let Type of tableDataService.tableTypes; let i = index">
-                        <input type="text" #inputElem [ngModel]="tableDataService.tableHeaders[i]" 
+                        <input class="boldText" type="text" #inputElem [ngModel]="tableDataService.tableHeaders[i]" 
                         (ngModelChange)="headerCleanup(tableDataService.tableHeaders[i], inputElem.value)">
                     </th>
                   </tr>

@@ -71,7 +71,9 @@
     align-content: center;
   }
 
-
+  .boldText {
+    font-weight: bold;
+  }
   .hidden{
     display: none;
   }
