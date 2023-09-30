@@ -12,22 +12,27 @@ export class DescriptiveComponent {
   constructor(public tableDataService: TableDataService) {}
   selectedVariables: { [key: string]: boolean } = {};
 
-  // TODOS: Computations must ignore empty rows
 
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
-  averages: { [key: string]: number } = {};
+  averages: { [key: string]: (number | undefined)} = {};
 
   // computes the averages for the selected metric variables
   getAverages() : void {
 
+    this.averages = {};
     console.log(this.tableDataService.tableData)
     // compute the Average for each header
     this.tableDataService.tableHeaders.forEach((header,index)=>{
       
-      if(this.selectedVariables[header['value']] == true && this.tableDataService.tableTypes[index][header['value']]){
-        let HeaderData = this.tableDataService.getColumnValues(header['value']);
+      if(this.selectedVariables[header] == true && this.tableDataService.tableTypes[index] == 'metric'){
+        let HeaderData = this.tableDataService.getColumnValues(header);
 
-        this.averages[header['value']] = simpleStats.mean(HeaderData);
+        if(HeaderData.length == 0){
+          this.averages[header] = undefined
+        }
+        else{
+          this.averages[header] = simpleStats.mean(HeaderData);
+        }
       }
         
 

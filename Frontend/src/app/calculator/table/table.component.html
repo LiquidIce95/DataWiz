@@ -30,15 +30,18 @@
                     </th>
                 </tr>
                 <tr>
-                    <th *ngFor="let header of tableDataService.tableHeaders">
-                        <input type="text" [ngModel]="header['editingValue']" (ngModelChange)="header['editingValue'] = $event; headerCleanup(header['value'], $event)">
+                    <!--IMPORTANT: we iterate through tableTypes because otherwise angualr would rerender on each change!!! -->
+                    <th *ngFor="let Type of tableDataService.tableTypes; let i = index">
+                        <input type="text" #inputElem [ngModel]="tableDataService.tableHeaders[i]" 
+                        (ngModelChange)="headerCleanup(tableDataService.tableHeaders[i], inputElem.value)">
                     </th>
                   </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of tableDataService.tableData">
                     <td *ngFor="let header of tableDataService.tableHeaders">
-                        <input type="text" [(ngModel)]="row[header['value']]">
+                        <input type="text" [ngModel]="row[header]" 
+                        (ngModelChange)="row[header] = tableDataService.convertToNumberIfPossible($event)">
                     </td>
                 </tr>
             </tbody>

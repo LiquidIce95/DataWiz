@@ -4,8 +4,9 @@
     <div>
         <div class="smalltitle">metric variables:</div>
         <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
-          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'metric'">
-            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          <div *ngIf="tableDataService.tableTypes[i] === 'metric'">
+            <input type="checkbox" [value]="header" [(ngModel)]="selectedVariables[header]"> 
+            {{ header }}
           </div>
         </ng-container>
       </div>    
@@ -13,8 +14,9 @@
       <div>
         <div class="smalltitle">ordinal variables:</div>
         <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
-          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'ordinal'">
-            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          <div *ngIf="tableDataService.tableTypes[i] === 'ordinal'">
+            <input type="checkbox" [value]="header" [(ngModel)]="selectedVariables[header]"> 
+            {{ header }}
           </div>
         </ng-container>
       </div>
@@ -22,8 +24,9 @@
       <div>
         <div class="smalltitle">nominal variables:</div>
         <ng-container *ngFor="let header of tableDataService.tableHeaders; let i = index">
-          <div *ngIf="tableDataService.tableTypes[i]?.['value'] === 'nominal'">
-            <input type="checkbox" [value]="header['value']" [(ngModel)]="selectedVariables[header['value']]"> {{ header['value'] }}
+          <div *ngIf="tableDataService.tableTypes[i] === 'nominal'">
+            <input type="checkbox" [value]="header" [(ngModel)]="selectedVariables[header]"> 
+            {{ header }}
           </div>
         </ng-container>
       </div>

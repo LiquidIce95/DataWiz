@@ -7,27 +7,17 @@ import { TableDataService } from '../../services/table.service';
   templateUrl: './table.component.html',
   styleUrls: ['../../globalStyles.css', './table.component.css']
 })
-export class TableComponent implements OnInit{
+export class TableComponent{
   
-  IEwindow : boolean = false;
 
   constructor(private renderer: Renderer2,public tableDataService: TableDataService) {}
-
-  ngOnInit() {
-    // Initialize editingValue for headers with the same value as the actual header
-    for (const header of this.tableDataService.tableHeaders) {
-      header['editingValue'] = header['value'];
-    }
-  }
   
-  // TODO: when editing table or importing data, numbers should be stored as numbers otherwise
-  // computations are wrong, 
   // TABLE -----------------------------------------------------------------------------------------
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
-    this.tableDataService.tableHeaders.push({ value: newColumnName });
-    this.tableDataService.tableTypes.push({value: 'nominal'})
+    this.tableDataService.tableHeaders.push(newColumnName);
+    this.tableDataService.tableTypes.push('nominal');
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableDataService.tableData.length; i++) {
       this.tableDataService.tableData[i][newColumnName] = ''; // Set the new column to an empty string
@@ -38,7 +28,7 @@ export class TableComponent implements OnInit{
     const newRow: { [key: string]: string } = {}; // Define the type of newRow
   
     for (const header of this.tableDataService.tableHeaders) {
-      newRow[header['value']] = ''; // Access header.value directly
+      newRow[header] = ''; // Access header.value directly
     }
   
     // Add the new row to the tableData array
@@ -53,11 +43,11 @@ export class TableComponent implements OnInit{
   
   delColumn() {
     if (this.tableDataService.tableHeaders.length > 0) {
-      const lastColumnName = this.tableDataService.tableHeaders[this.tableDataService.tableHeaders.length - 1]['value'];
+      const lastColumnName = this.tableDataService.tableHeaders[this.tableDataService.tableHeaders.length - 1];
   
       // Remove the column from the tableHeaders
-      this.tableDataService.tableHeaders.pop();
-      this.tableDataService.tableTypes.pop();
+      let header : any = this.tableDataService.tableHeaders.pop();
+      delete this.tableDataService.tableTypes[header];
   
       // Remove the corresponding data entries in all rows
       for (let i = 0; i < this.tableDataService.tableData.length; i++) {
@@ -66,10 +56,21 @@ export class TableComponent implements OnInit{
     }
   }
 
+  clearTab() {
+    // Clear cell values
+    for (let i = 0; i < this.tableDataService.tableData.length; i++) {
+      const rowData = this.tableDataService.tableData[i];
+      for (const header of this.tableDataService.tableHeaders) {
+        rowData[header] = '';
+      }
+    }
+  
+  }
+
+  // needed each time a header is modified by user
   headerCleanup(oldHeader: string, newHeader: string) {
 
-    console.log('Old Header:', oldHeader);
-    console.log('New Header:', newHeader);    // Iterate through each row in tableData
+    
     for (let i = 0; i < this.tableDataService.tableData.length; i++) {
       const rowData = this.tableDataService.tableData[i];
       
@@ -84,35 +85,32 @@ export class TableComponent implements OnInit{
     }
 
     // After cleanup, update the header value
-    const index = this.tableDataService.tableHeaders.findIndex(header => header['value'] === oldHeader);
+    const index = this.tableDataService.tableHeaders.findIndex(header => header === oldHeader);
     if (index !== -1) {
-      this.tableDataService.tableHeaders[index]['value'] = newHeader;
+      this.tableDataService.tableHeaders[index] = newHeader;
     }
   }
 
 
-  clearTab() {
-    // Clear cell values
-    for (let i = 0; i < this.tableDataService.tableData.length; i++) {
-      const rowData = this.tableDataService.tableData[i];
-      for (const header of this.tableDataService.tableHeaders) {
-        rowData[header['value']] = '';
-      }
+  // needs to be called if user changes types via dropdown menu
+  onTypeChange(selectedType: string, index: number) {
+    if (selectedType === 'auto') {
+      const columnName = this.tableDataService.tableHeaders[index];
+      const columnValues = this.tableDataService.getColumnValues(columnName);
+      selectedType = this.tableDataService.deduceColumnType(columnValues);
     }
-  
-    // Clear header editing values
-    for (const header of this.tableDataService.tableHeaders) {
-      header['editingValue'] = '';
-    }
+    this.tableDataService.tableTypes[index] = selectedType;
   }
-  
 
   // IMPORT EXPORT FEATURE--------------------------------------------------------------------------
+  IEwindow : boolean = false;
+
+  
   exportToCSV() {
     // Prepare the CSV data
-    const headerRow = this.tableDataService.tableHeaders.map(header => header['value']).join(',');
+    const headerRow = this.tableDataService.tableHeaders.map(header => header).join(',');
     const csvRows = this.tableDataService.tableData.map(row => {
-      return this.tableDataService.tableHeaders.map(header => row[header['value']]).join(',');
+      return this.tableDataService.tableHeaders.map(header => row[header]).join(',');
     });
 
     // Combine header and rows into a single CSV string
@@ -138,26 +136,30 @@ export class TableComponent implements OnInit{
     window.URL.revokeObjectURL(url);
   }
 
-
+  // closes or opens the exportwindow
   toggleImportExportWin(){
     this.IEwindow = !this.IEwindow;
   }
 
+  // updates tableDataService.tableData and .tableHeaders with the arguments
   UpdateTable(parsedData:{ [key: string]: any }[],headers:string[]){
     // Update tableData with the parsed data
     parsedData.forEach((data) => {
-      this.tableDataService.tableData.push(data);
+    for (const key in data) {
+      if ((data[key] !== undefined)) {
+        data[key] = this.tableDataService.convertToNumberIfPossible(data[key]);
+      }
+    }
+    this.tableDataService.tableData.push(data);
     });
 
     // Update tableHeaders with the headers
     headers.forEach((header) => {
-      this.tableDataService.tableHeaders.push({ value: header });
+      this.tableDataService.tableHeaders.push(header);
     });
-    for (const header of this.tableDataService.tableHeaders) {
-      header['editingValue'] = header['value'];
-    }
   }
 
+  // imports the csv file and stores it parsedData and headers
   OnLoadImport(e:any){
     // Initialize an array to store the parsed data
     const parsedData: { [key: string]: any }[] = [];
@@ -190,7 +192,7 @@ export class TableComponent implements OnInit{
 
   }
 
-  // assuming input data has same format as table, first row is header
+  // assuming input data has same format as table, first row is header, types are auto-detected
   importFile(event: any) {
     const fileInput = event.target;
 
@@ -218,14 +220,6 @@ export class TableComponent implements OnInit{
   }
 
 
-  onTypeChange(selectedType: string, index: number) {
-    if (selectedType === 'auto') {
-      const columnName = this.tableDataService.tableHeaders[index]['value'];
-      const columnValues = this.tableDataService.getColumnValues(columnName);
-      selectedType = this.tableDataService.deduceColumnType(columnValues);
-    }
-    this.tableDataService.tableTypes[index]['value'] = selectedType;
-  }
 
   
 

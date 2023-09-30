@@ -5,31 +5,36 @@ import { Injectable } from '@angular/core';
 })
 export class TableDataService {
   // Cell entries first dimension is row then the key correspond to a header 
-  // the value returned is the value for the (header,row) pair
+  // the value returned is the value for the (row,header/col) pair
   tableData: { [key: string]: any }[] = [
     { name: 'John', age: 30, income: 0 },
     { name: 'Alice', age: 25, income: 100 },
   ];
-
-  tableHeaders: { [key: string]: string }[] = [
-    { value: 'name' },
-    { value: 'age' },
-    { value: 'income' },
+  // INVARIANT: length of tableheaders and types is the same
+  // the headers read from legt to right
+  tableHeaders: string[] = [
+    'name',
+    'age',
+    'income'
   ];
 
-  tableTypes: { [key: string]: string }[] = [
-    { value: 'nominal' },
-    { value: 'metric' },
-    { value: 'metric' },
+  // teh header types also read from left to right
+  tableTypes: string[] = [
+    'nominal',
+    'metric',
+    'metric'
   ];
   
   constructor() { }
 
-
+  // returns a list [] consisting of all entries of the header which are not '' or undefined
   getColumnValues(columnName: string): any[] {
-    return this.tableData.map(row => row[columnName]);
+    return this.tableData.map(row => row[columnName]).filter(val => val !== undefined && val !== '');
+
+    
   }
 
+  
   deduceColumnType(columnValues: any[]): string {
     if (columnValues.every(value => !isNaN(value))) {
         return 'metric';
@@ -40,13 +45,23 @@ export class TableDataService {
   TypeDetect(){
     this.tableTypes = [];
     // now we detect the types
-    this.tableHeaders.forEach((header) => {
-      const data : any[] = this.getColumnValues(header['value']);
+    this.tableHeaders.forEach((header,index) => {
+      const data : any[] = this.getColumnValues(header);
       const type : string = this.deduceColumnType(data);
-      this.tableTypes.push({value:type});
+      this.tableTypes[index] = type;
     });
   }
 
-
+  convertToNumberIfPossible(inputValue: any): any {
+    // Check if the input value can be converted to a number
+    if (!isNaN(Number(inputValue)) && inputValue != '') {
+      // Convert to number and return
+      return Number(inputValue);
+    } else {
+      // If not convertible, return the original value
+      return inputValue;
+    }
+  }
+  
 
 }
