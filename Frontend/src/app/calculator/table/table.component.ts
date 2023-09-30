@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { TableDataService } from '../table.service';
+import { TableDataService } from '../../services/table.service';
 
 
 @Component({
@@ -173,7 +173,7 @@ export class TableComponent implements OnInit{
     
 
     // Loop through the rows, starting from the second row (index 1)
-    for (let i = 1; i < rows.length-1; i++) {
+    for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(',');
       const rowData: { [key: string]: any } = {};
 
@@ -190,31 +190,6 @@ export class TableComponent implements OnInit{
 
   }
 
-  getColumnValues(columnName: string): any[] {
-    return this.tableDataService.tableData.map(row => row[columnName]);
-  }
-
-  deduceColumnType(columnValues: any[]): string {
-    if (columnValues.every(value => !isNaN(value))) {
-        return 'metric';
-    }
-    return 'nominal'; // Default type
-  }
-
-  TypeDetect(reader : FileReader,selectedFile:any){
-    this.IEwindow = false;
-
-    this.tableDataService.tableTypes = [];
-    // now we detect the types
-    this.tableDataService.tableHeaders.forEach((header) => {
-      const data : any[] = this.getColumnValues(header['value']);
-      const type : string = this.deduceColumnType(data);
-      this.tableDataService.tableTypes.push({value:type});
-    });
-  }
-
-
-
   // assuming input data has same format as table, first row is header
   importFile(event: any) {
     const fileInput = event.target;
@@ -228,7 +203,8 @@ export class TableComponent implements OnInit{
         reader.onload = (e: any) => {
           
           this.OnLoadImport(e);
-          this.TypeDetect(reader,selectedFile);
+          this.IEwindow = false;
+          this.tableDataService.TypeDetect();
 
         };
 
@@ -241,15 +217,12 @@ export class TableComponent implements OnInit{
     }
   }
 
-  
-
-  
 
   onTypeChange(selectedType: string, index: number) {
     if (selectedType === 'auto') {
       const columnName = this.tableDataService.tableHeaders[index]['value'];
-      const columnValues = this.getColumnValues(columnName);
-      selectedType = this.deduceColumnType(columnValues);
+      const columnValues = this.tableDataService.getColumnValues(columnName);
+      selectedType = this.tableDataService.deduceColumnType(columnValues);
     }
     this.tableDataService.tableTypes[index]['value'] = selectedType;
   }

@@ -24,4 +24,29 @@ export class TableDataService {
   ];
   
   constructor() { }
+
+
+  getColumnValues(columnName: string): any[] {
+    return this.tableData.map(row => row[columnName]);
+  }
+
+  deduceColumnType(columnValues: any[]): string {
+    if (columnValues.every(value => !isNaN(value))) {
+        return 'metric';
+    }
+    return 'nominal'; // Default type
+  }
+
+  TypeDetect(){
+    this.tableTypes = [];
+    // now we detect the types
+    this.tableHeaders.forEach((header) => {
+      const data : any[] = this.getColumnValues(header['value']);
+      const type : string = this.deduceColumnType(data);
+      this.tableTypes.push({value:type});
+    });
+  }
+
+
+
 }
