@@ -49,6 +49,10 @@
 
 }
 
+.width10{
+    width: 10vw;
+}
+
 .clickable{
     cursor: pointer;
     background-color: rgb(225, 208, 132);
@@ -61,8 +65,10 @@
     flex-direction: column;
     justify-content: space-evenly;
     z-index: 2;
-    width: 20vw;
-    height: 20vh;
+    min-width: 30vw;
+    min-height: 30vh;
+    width: min-content;
+    height: min-content;
     font-family: 'Calibri';
     background-color: rgb(242, 241, 228);
     border: 0.2vw solid black;    

@@ -112,7 +112,16 @@ export class TableComponent{
   // IMPORT EXPORT FEATURE--------------------------------------------------------------------------
   IEwindow : boolean = false;
   delimiter : string = ',';
+  FormType : string = "0";
+
+  setDelimiter(delimiter: string) {
+    this.delimiter = delimiter;
+  }
   
+  setFormType(FormType : string){
+    this.FormType = FormType;
+  }
+
   exportToCSV() {
     // Prepare the CSV data
     const headerRow = this.tableDataService.tableHeaders.map(header => header).join(',');
@@ -200,7 +209,7 @@ export class TableComponent{
   }
 
   // assuming input data has same format as table, first row is header, types are auto-detected
-  importFile(event: any) {
+  importFile1(event: any) {
     const fileInput = event.target;
 
     if (fileInput.files && fileInput.files.length > 0) {
@@ -223,6 +232,65 @@ export class TableComponent{
       } else {
         console.error('Invalid file format. Please select a CSV file.');
       }
+    }
+  }
+
+
+  importFile2(event: any) {
+    const fileInput = event.target;
+  
+    if (fileInput.files && fileInput.files.length > 0) {
+      const selectedFile = fileInput.files[0];
+  
+      if (selectedFile.type === 'application/vnd.ms-excel' || selectedFile.type === 'text/csv') {
+        const reader = new FileReader();
+  
+        reader.onload = (e: any) => {
+          const parsedData: { [key: string]: any }[] = [];
+          const headers: string[] = [];
+  
+          const csvData = e.target.result;
+          const rows = csvData.split('\n');
+          
+          this.tableDataService.tableData = [];
+          this.tableDataService.tableHeaders = [];
+  
+          // Initialize parsedData objects
+          const initialRow = rows[0].split(this.delimiter);
+          headers.push(initialRow[0]);
+          for (let j = 1; j < initialRow.length; j++) {
+            const obj: { [key: string]: any } = {};
+            obj[initialRow[0]] = initialRow[j];
+            parsedData.push(obj);
+          }
+  
+          // Populate parsedData objects
+          for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].split(this.delimiter);
+            headers.push(cells[0]);
+            for (let j = 1; j < cells.length; j++) {
+              parsedData[j - 1][cells[0]] = cells[j];
+            }
+          }
+  
+          this.UpdateTable(parsedData, headers);
+          this.IEwindow = false;
+          this.tableDataService.TypeDetect();
+        };
+  
+        reader.readAsText(selectedFile);
+      } else {
+        console.error('Invalid file format. Please select a CSV file.');
+      }
+    }
+  }
+  
+  importFile(event:any){
+    if(this.FormType == "1"){
+      this.importFile1(event);
+    }
+    else{
+      this.importFile2(event);
     }
   }
 
