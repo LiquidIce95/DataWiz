@@ -41,6 +41,7 @@ export class TableDataService {
     return 'nominal'; // Default type
   }
 
+  // Detects the variable type of all columns
   TypeDetect(){
     this.tableTypes = [];
     // now we detect the types
@@ -51,6 +52,7 @@ export class TableDataService {
     });
   }
 
+  // gets user input from html template, converts it into a number if possible
   convertToNumberIfPossible(inputValue: any): any {
     // Check if the input value can be converted to a number
     if (!isNaN(Number(inputValue)) && inputValue != '') {

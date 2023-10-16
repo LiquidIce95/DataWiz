@@ -12,11 +12,10 @@ export class DescriptiveComponent {
   constructor(public tableDataService: TableDataService) {}
   selectedVariables: { [key: string]: boolean } = {};
 
-
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   averages: { [key: string]: (number | undefined)} = {};
 
-  // deltes old headers in the selectedvariables dict
+  // deletes old headers in the selectedvariables dict
   cleanSelectedVariables() {
     // Loop through all the keys in selectedVariables
     for (const key in this.selectedVariables) {
@@ -33,13 +32,6 @@ export class DescriptiveComponent {
     this.averages = {};
     this.cleanSelectedVariables();
     
-    console.log(this.tableDataService.tableData)
-
-    for (const key in this.selectedVariables) {
-      if (Object.prototype.hasOwnProperty.call(this.selectedVariables, key)) {
-        console.log(`Key: ${key}, Value: ${this.selectedVariables[key]}`);
-      }
-    }
     // compute the Average for each header
     this.tableDataService.tableHeaders.forEach((header,index)=>{
       
@@ -56,7 +48,7 @@ export class DescriptiveComponent {
         
 
     });
-}
+  }
   
 
   getAverageKeys(): string[] {
