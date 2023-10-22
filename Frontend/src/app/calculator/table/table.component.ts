@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { TableDataService } from '../../services/table.service';
 
 
@@ -13,6 +13,10 @@ export class TableComponent{
   constructor(private renderer: Renderer2,public tableDataService: TableDataService) {}
   
   // TABLE -----------------------------------------------------------------------------------------
+  /**
+   * @yields adds a new column to the tableHeaders array and 
+   * populates it with empty strings
+   */
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
@@ -24,6 +28,9 @@ export class TableComponent{
     }
 
   }
+  /**
+   * @yields adds one empty entry to each tablecolumn/header
+   */
   addRow() {
     const newRow: { [key: string]: string } = {}; // Define the type of newRow
   
@@ -35,12 +42,18 @@ export class TableComponent{
     this.tableDataService.tableData.push(newRow);
   }
 
+  /**
+   * @yields deltes one the last row in tableData
+   */
   delRow() {
     if (this.tableDataService.tableData.length > 0) {
       this.tableDataService.tableData.pop(); // Removes the last row
     }
   }
   
+  /**
+   * @yields deletes the last table header and its data in tableData
+   */
   delColumn() {
     if (this.tableDataService.tableHeaders.length > 0) {
       const lastColumnName = this.tableDataService.tableHeaders[this.tableDataService.tableHeaders.length - 1];
@@ -56,6 +69,9 @@ export class TableComponent{
     }
   }
 
+  /**
+   * sets all tableData entries to "" string, headers and thier types remain the same
+   */
   clearTab() {
     // Clear cell values
     for (let i = 0; i < this.tableDataService.tableData.length; i++) {
@@ -67,7 +83,12 @@ export class TableComponent{
   
   }
 
-  // needed each time a header is modified by user
+  /**
+   * needed each time a header is modified by user
+   * @param oldHeader the headername pre modification
+   * @param newHeader the headername post modification
+   * which is the user input
+   */
   headerCleanup(oldHeader: string, newHeader: string) {
 
     
@@ -92,7 +113,12 @@ export class TableComponent{
   }
 
 
-  // needs to be called if user changes types via dropdown menu
+  
+  /**
+   * needs to be called if user changes types via dropdown menu
+   * @param selectedType type as string
+   * @param index index for header in tableHeaders
+   */
   onTypeChange(selectedType: string, index: number) {
     if (selectedType === 'auto') {
       const columnName = this.tableDataService.tableHeaders[index];
@@ -103,17 +129,40 @@ export class TableComponent{
   }
 
   // DATA TRANSFORM FEATURE------------------------------------------------------------------------
+  /**
+   * boolean to model Transfer window state
+   */
   TWindow = false;
+  /**
+   * toggles the window for the transform module
+   */
   toggleTransData(){
     this.TWindow = ! this.TWindow;
   }
 
 
   // IMPORT EXPORT FEATURE--------------------------------------------------------------------------
+
+
+  /**
+   * Import Export Window
+   */
   IEwindow : boolean = false;
+
+  /**
+   * delimiter for the conversion into the tableHeader data
+   */
   delimiter : string = ',';
+
+  /**
+   * specifies which format the input data has
+   */
   FormType : string = "0";
 
+  /**
+   * setter for this.delimiter
+   * @param delimiter delimiter for input data
+   */
   setDelimiter(delimiter: string) {
     this.delimiter = delimiter;
   }
@@ -156,7 +205,7 @@ export class TableComponent{
   toggleImportExportWin(){
     this.IEwindow = !this.IEwindow;
   }
-
+  
   // updates tableDataService.tableData and .tableHeaders with the arguments
   UpdateTable(parsedData:{ [key: string]: any }[],headers:string[]){
     // Update tableData with the parsed data
