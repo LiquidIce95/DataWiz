@@ -13,9 +13,16 @@ export class DescriptiveComponent {
   selectedVariables: { [key: string]: boolean } = {};
 
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
+  /**
+   * dictonary to store the computed averages
+   * key is the variable name (tableheader)
+   */
   averages: { [key: string]: (number | undefined)} = {};
 
-  // deletes old headers in the selectedvariables dict
+  /**
+   * @yields deletes the variables that are selected but no present 
+   * in the tableDataService.tableHeaders
+   */
   cleanSelectedVariables() {
     // Loop through all the keys in selectedVariables
     for (const key in this.selectedVariables) {
@@ -27,6 +34,10 @@ export class DescriptiveComponent {
     }
   }
   // computes the averages for the selected metric variables
+  /**
+   * @yields computes the average for each selected metric variable (tableheader)
+   * and stores them in the this.averages dict
+   */
   getAverages() : void {
 
     this.averages = {};
@@ -50,7 +61,10 @@ export class DescriptiveComponent {
     });
   }
   
-
+  /**
+   * 
+   * @returns all the keys for the dict this.averages
+   */
   getAverageKeys(): string[] {
     this.getAverages();
     return Object.keys(this.averages);
@@ -58,7 +72,6 @@ export class DescriptiveComponent {
 
 
   // MEDIAN COMPUTATION----------------------------------------------------------------------------------
-  medians: {[key: string]: number} = {};
 
 
 
