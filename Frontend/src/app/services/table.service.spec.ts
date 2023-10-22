@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TableDataService } from '../services/table.service';
 
 fdescribe('TableService', () => {
@@ -14,18 +13,40 @@ fdescribe('TableService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('getColumnValues should return correct column values', () => {
-    expect(service.getColumnValues('name')).toEqual(['John', 'Alice']);
-    expect(service.getColumnValues('age')).toEqual([30, 25]);
-    expect(service.getColumnValues('income')).toEqual([0, 100]);
-    expect(service.getColumnValues('nonexistent')).toEqual([]);
+  describe('getColumnValues', () => {
+    it('should return correct values for name column', () => {
+      expect(service.getColumnValues('name')).toEqual(['John', 'Alice'])
+    });
+
+    it('should return correct values for age column', () => {
+      expect(service.getColumnValues('age')).toEqual([30, 25]);
+    });
+
+    it('should return correct values for income column', () => {
+      expect(service.getColumnValues('income')).toEqual([0, 100]);
+    });
+
+    it('should return empty array for nonexistent column', () => {
+      expect(service.getColumnValues('nonexistent')).toEqual([]);
+    });
   });
 
-  it('deduceColumnType should return correct type', () => {
-    expect(service.deduceColumnType(['John', 'Alice'])).toEqual('nominal');
-    expect(service.deduceColumnType([30, 25])).toEqual('metric');
-    expect(service.deduceColumnType([30, 'John'])).toEqual('nominal');
-    expect(service.deduceColumnType([])).toEqual('metric');
+  describe('deduceColumnType', () => {
+    it('should return nominal for string array', () => {
+      expect(service.deduceColumnType(['John', 'Alice'])).toEqual('nominal');
+    });
+
+    it('should return metric for number array', () => {
+      expect(service.deduceColumnType([30, 25])).toEqual('metric');
+    });
+
+    it('should return nominal for mixed array', () => {
+      expect(service.deduceColumnType([30, 'John'])).toEqual('nominal');
+    });
+
+    it('should return metric for empty array', () => {
+      expect(service.deduceColumnType([])).toEqual('metric');
+    });
   });
 
   it('TypeDetect should correctly set tableTypes', () => {
@@ -33,14 +54,25 @@ fdescribe('TableService', () => {
     expect(service.tableTypes).toEqual(['nominal', 'metric', 'metric']);
   });
 
-  it('convertToNumberIfPossible should correctly convert', () => {
-    expect(service.convertToNumberIfPossible('10')).toEqual(10);
-    expect(service.convertToNumberIfPossible('0')).toEqual(0);
-    expect(service.convertToNumberIfPossible('John')).toEqual('John');
-    expect(service.convertToNumberIfPossible('')).toEqual('');
-    expect(service.convertToNumberIfPossible(undefined)).toEqual(undefined);
+  describe('convertToNumberIfPossible', () => {
+    it('should convert string to number', () => {
+      expect(service.convertToNumberIfPossible('10')).toEqual(10);
+    });
+
+    it('should convert 0 string to number', () => {
+      expect(service.convertToNumberIfPossible('0')).toEqual(0);
+    });
+
+    it('should not convert non-numeric string', () => {
+      expect(service.convertToNumberIfPossible('John')).toEqual('John');
+    });
+
+    it('should return empty string', () => {
+      expect(service.convertToNumberIfPossible('')).toEqual('');
+    });
+
+    it('should return undefined', () => {
+      expect(service.convertToNumberIfPossible(undefined)).toEqual(undefined);
+    });
   });
-
-
-
 });
