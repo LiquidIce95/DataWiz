@@ -34,8 +34,6 @@ export class TableDataService {
     'metric'
   ];
   
-  constructor() { }
-
   
   /**
  * returns a list [] consisting of all entries of the header which are not '' or undefined

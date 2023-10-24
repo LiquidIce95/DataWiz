@@ -20,7 +20,7 @@ export class DescriptiveComponent {
   averages: { [key: string]: (number | undefined)} = {};
 
   /**
-   * @yields deletes the variables that are selected but no present 
+   * @yields deletes the variables that are selected but not present 
    * in the tableDataService.tableHeaders
    */
   cleanSelectedVariables() {

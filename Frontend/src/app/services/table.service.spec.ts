@@ -49,10 +49,24 @@ fdescribe('TableService', () => {
     });
   });
 
-  it('TypeDetect should correctly set tableTypes', () => {
-    service.TypeDetect();
-    expect(service.tableTypes).toEqual(['nominal', 'metric', 'metric']);
+  describe('TypeDetect', ()=>{
+
+    it('TypeDetect should correctly set tableTypes', () => {
+      service.TypeDetect();
+      expect(service.tableTypes).toEqual(['nominal', 'metric', 'metric']);
+    });
+
+    it(('all non metric values'),()=>{
+      service.tableData = [
+        { name: 'John', age: 'undefined', income: 'very low' },
+        { name: 'Alice', age: 'too old', income: 'mid' },
+      ];
+
+      service.TypeDetect();
+      expect(service.tableTypes).toEqual(['nominal','nominal','nominal'])
+    });
   });
+  
 
   describe('convertToNumberIfPossible', () => {
     it('should convert string to number', () => {
