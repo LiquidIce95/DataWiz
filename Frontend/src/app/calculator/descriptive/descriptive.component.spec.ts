@@ -25,32 +25,57 @@ fdescribe('DescriptiveComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('cleanSelectedVariables should remove invalid keys', () => {
-    component.selectedVariables = {'name': true, 'age': true, 'income':false};
-    component.tableDataService.tableData = [{'name':'bob','age':40, 'income':100}]
-    component.cleanSelectedVariables();
-    expect(component.selectedVariables).toEqual({'name': true});
+  describe('cleanSeelctedVariables' , ()=>{
+    it('cleanSelectedVariables should do nothing', () => {
+      component.selectedVariables = {'name': true, 'age': true, 'income':false};
+      component.tableDataService.tableData = [{'name':'bob','age':40, 'income':100}]
+      component.cleanSelectedVariables();
+      expect(component.selectedVariables).toEqual({'name': true, 'age':true, 'income':false});
+    });
+
+    it('cleanSelectedVariables should delte name', () => {
+      component.selectedVariables = {'name': false, 'age': false, 'income':false};
+      component.tableDataService.tableData = [{'age':40, 'income':100}]
+      component.cleanSelectedVariables();
+      expect(component.selectedVariables).toEqual({'age':false, 'income':false});
+    });
+
+    it('cleanSelectedVariables should del everything', () => {
+      component.selectedVariables = {'name': true, 'age': true, 'income':false};
+      component.tableDataService.tableData = [{'id':10, 'birthday':'19.05.1994'}]
+      component.cleanSelectedVariables();
+      expect(component.selectedVariables).toEqual({});
+    });
+
+
   });
 
-  it('getAverages should populate averages correctly', () => {
-    mockTableDataService.getColumnValues.and.returnValue([20, 30]);
-    component.selectedVariables = {'age': true};
-    component.getAverages();
-    expect(component.averages['age']).toBe(25);
+  describe('getAverages',()=>{
+
+    it('getAverages should populate averages correctly', () => {
+      mockTableDataService.getColumnValues.and.returnValue([20, 30]);
+      component.selectedVariables = {'age': true};
+      component.getAverages();
+      expect(component.averages['age']).toBe(25);
+    });
+  
+    it('getAverages should handle empty array', () => {
+      mockTableDataService.getColumnValues.and.returnValue([]);
+      component.selectedVariables = {'age': true};
+      component.getAverages();
+      expect(component.averages['age']).toBeUndefined();
+    });
+  
   });
 
-  it('getAverages should handle empty array', () => {
-    mockTableDataService.getColumnValues.and.returnValue([]);
-    component.selectedVariables = {'age': true};
-    component.getAverages();
-    expect(component.averages['age']).toBeUndefined();
-  });
-
-  it('getAverageKeys should return correct keys', () => {
-    mockTableDataService.getColumnValues.and.returnValue([20, 30]);
-    component.selectedVariables = {'age': true};
-    const keys = component.getAverageKeys();
-    expect(keys).toEqual(['age']);
-  });
+  describe('getAverageKeys',()=>{
+    it('getAverageKeys should return correct keys', () => {
+      mockTableDataService.getColumnValues.and.returnValue([20, 30]);
+      component.selectedVariables = {'age': true};
+      const keys = component.getAverageKeys();
+      expect(keys).toEqual(['age']);
+    });
+  })
+  
 
 });
