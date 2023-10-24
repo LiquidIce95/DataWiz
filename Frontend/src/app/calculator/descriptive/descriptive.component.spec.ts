@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DescriptiveComponent } from './descriptive.component';
 import { TableDataService } from '../../services/table.service';
+import { FormsModule } from '@angular/forms';
 
 fdescribe('DescriptiveComponent', () => {
   let component: DescriptiveComponent;
   let fixture: ComponentFixture<DescriptiveComponent>;
-  let mockTableDataService: jasmine.SpyObj<TableDataService>;
-
   beforeEach(() => {
-    mockTableDataService = jasmine.createSpyObj('TableDataService', ['getColumnValues']);
-
     TestBed.configureTestingModule({
-      declarations: [ DescriptiveComponent ],
-      providers: [
-        { provide: TableDataService, useValue: mockTableDataService }
-      ]
+      declarations: [DescriptiveComponent],
+      providers: [TableDataService],
+      imports: [FormsModule],
+
     });
+  
     fixture = TestBed.createComponent(DescriptiveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -52,29 +51,77 @@ fdescribe('DescriptiveComponent', () => {
 
   describe('getAverages',()=>{
 
-    it('getAverages should populate averages correctly', () => {
-      mockTableDataService.getColumnValues.and.returnValue([20, 30]);
+    it('single value', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        
+      ];
       component.selectedVariables = {'age': true};
       component.getAverages();
-      expect(component.averages['age']).toBe(25);
+      expect(component.averages['age']).toBe(30);
     });
   
-    it('getAverages should handle empty array', () => {
-      mockTableDataService.getColumnValues.and.returnValue([]);
-      component.selectedVariables = {'age': true};
+    it('compute average', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        { name: 'Alice', age: 25, income: 100 },
+      ];      
+      component.selectedVariables = {'age': true, 'income': false};
       component.getAverages();
-      expect(component.averages['age']).toBeUndefined();
+      expect(component.averages['age']).toBe(27.5);
+    });
+
+    it('ignore unselected Var', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        { name: 'Alice', age: 25, income: 100 },
+      ];      
+      component.selectedVariables = {'age': true, 'income': false};
+      component.getAverages();
+      expect('income' in component.averages).toBe(false);
     });
   
   });
 
   describe('getAverageKeys',()=>{
-    it('getAverageKeys should return correct keys', () => {
-      mockTableDataService.getColumnValues.and.returnValue([20, 30]);
+    it('one key', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        { name: 'Alice', age: 25, income: 100 },
+      ];  
       component.selectedVariables = {'age': true};
       const keys = component.getAverageKeys();
       expect(keys).toEqual(['age']);
     });
+
+    it('no key', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        { name: 'Alice', age: 25, income: 100 },
+      ];  
+      component.selectedVariables = {'age': false, 'name':false,'income':false};
+      component.getAverages()
+      const keys = component.getAverageKeys();
+      expect(keys).toEqual([]);
+    });
+
+    it('two keys', () => {
+      component.tableDataService.tableData =
+      [
+        { name: 'John', age: 30, income: 0 },
+        { name: 'Alice', age: 25, income: 100 },
+      ];  
+      component.selectedVariables = {'age': true, 'name':false,'income':true};
+      component.getAverages()
+      const keys = component.getAverageKeys();
+      expect(keys).toEqual(['age','income']);
+    });
+
   })
   
 

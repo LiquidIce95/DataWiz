@@ -23,7 +23,7 @@ export class DescriptiveComponent {
    * @yields deletes the variables that are selected but no present 
    * in the tableDataService.tableHeaders
    */
-  cleanSelectedVariables() {
+  cleanSelectedVariables():void {
     // Loop through all the keys in selectedVariables
     for (const key in this.selectedVariables) {
       // Check if this key exists in tableDataService.tableHeaders
@@ -67,7 +67,12 @@ export class DescriptiveComponent {
    */
   getAverageKeys(): string[] {
     this.getAverages();
-    return Object.keys(this.averages);
+    let keys : string[] = [];
+
+    for (const key in this.averages){
+       keys.push(key);
+    }
+    return keys;
   }  
 
 
