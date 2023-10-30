@@ -67,6 +67,13 @@ export class TableDataService {
     }
     
     this.tableHeaders[key] = [type,select];
+
+    if (type == 'auto'){
+      let colData = this.getColumnValues(key);
+      this.deduceColumnType(colData);
+
+    }
+
   }
 
 

@@ -39,7 +39,7 @@
         <app-transform></app-transform>
     </div>
     <div class="tableActions">
-        <div class="tableActionsText" (click)="tableDataService.clearTab()">clear table</div>
+        <div class="tableActionsText" (click)="tableDataService.clearTable()">clear table</div>
         <div class="tableActionsText" (click)="tableDataService.addColumn()">add column</div>
         <div class="tableActionsText" (click)="tableDataService.addRow()">add row</div>
         <div class="tableActionsText" (click)="tableDataService.delColumn()">delete column</div>
@@ -51,8 +51,8 @@
         <table>
             <thead>
                 <tr>
-                    <th *ngFor="let Type of Object.keys(tableDataService.tableHeaders); let i = index">
-                        <select #selectElem (change)="tableDataService.onTypeChange(selectElem.value, i)">
+                    <th *ngFor="let key of tableDataService.getKeys(); let i = index">
+                        <select #selectElem (change)="tableDataService.setHvalue(key,selectElem.value)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>
                             <option value="nominal">nominal</option>
@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <!--IMPORTANT: we iterate through tableTypes because otherwise angualr would rerender on each change!!! -->
-                    <th *ngFor="let Type of tableDataService.tableTypes; let i = index">
+                    <th *ngFor="let key of tableDataService.getKeys(); let i = index">
                         <input class="boldText" type="text" #inputElem [ngModel]="tableDataService.tableHeaders[i]" 
                         (ngModelChange)="headerCleanup(tableDataService.tableHeaders[i], inputElem.value)">
                     </th>
