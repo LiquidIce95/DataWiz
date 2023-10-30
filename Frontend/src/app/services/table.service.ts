@@ -8,7 +8,7 @@ export class TableDataService {
   * the value returned is the value for the (row,header/col) pair 
   * the key is the name of the table headers
   */
-  tableData: { [key: string]: any }[] = [
+  private tableData: { [key: string]: any }[] = [
     { name: 'John', age: 30, income: 0 },
     { name: 'Alice', age: 25, income: 100 },
   ];
@@ -17,19 +17,26 @@ export class TableDataService {
    * key is the column / variable name, value is a list containning
    * the type and if its selected or not
    */
-  tableHeaders: {[key:string] : any[] } = {
+  private tableHeaders: {[key:string] : any[] } = {
     'name':['nominal',false],
     'age' :['metric',false],
     'income' : ['metric',false]
   };
 
-
-
   
   constructor() { }
 
+
   /**
    * 
+   * @returns headernames which are keys for tableHeaders
+   */
+  getKeys():string[]{
+    return Object.keys(this.tableHeaders);
+  }
+
+  /**
+   * sets a value in the tableData
    * @param index row index of tableData
    * @param key header / variable name / column name
    * @param value value to be set at that row and for tha column
@@ -39,7 +46,7 @@ export class TableDataService {
   }
 
   /**
-   * 
+   * gets a value from tableData
    * @param index row index of tableData
    * @param key header / variable name / column name
    * @returns value to be set at that row and for tha column
@@ -48,6 +55,12 @@ export class TableDataService {
     return this.tableData[index][key];
   }
 
+  /**
+   * 
+   * @param key headername / var name / key for tableHeader
+   * @param type the type of the variable which is represented by the header
+   * @param select boolean value indicated whether the variable is selected for computation
+   */
   setHvalue(key:string , type:string, select=null){
     if ( select == null ){
       let select = this.tableHeaders[key][1];
@@ -56,9 +69,34 @@ export class TableDataService {
     this.tableHeaders[key] = [type,select];
   }
 
+
+  /**
+   * 
+   * @param key gets a value from the tableHeaders
+   * @returns list with two elements first is type second is the value for 
+   * select
+   */
   getHvalue(key: string){
     return this.tableHeaders[key];
   }
+
+
+  /**
+   * needed each time a header is modified by user
+   * @param oldHeader the headername pre modification, is the key for this.tableHeaders
+   * @param newHeader the headername post modification
+   * which is the user input
+   */
+  changeHeaderName(oldHeader: string, newHeader: string) {
+    
+    let data = this.tableHeaders[oldHeader];
+
+    delete this.tableHeaders[oldHeader];
+
+    this.tableHeaders[newHeader] = data;
+
+  }
+
 
   /**
  * returns a list [] consisting of all entries of the header which are not '' or undefined
@@ -189,22 +227,6 @@ export class TableDataService {
       }
     }
   
-  }
-
-  /**
-   * needed each time a header is modified by user
-   * @param oldHeader the headername pre modification
-   * @param newHeader the headername post modification
-   * which is the user input
-   */
-  headerCleanup(oldHeader: string, newHeader: string) {
-    
-    let data = this.tableHeaders[oldHeader];
-
-    delete this.tableHeaders[oldHeader];
-
-    this.tableHeaders[newHeader] = data;
-
   }
 
   
