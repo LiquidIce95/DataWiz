@@ -23,16 +23,6 @@ export class TableDataService {
     'income' : ['metric',false]
   };
 
-  /**
-   * this is also read left to right so the first entry is the left most 
-   * table header
-   */
-  tableTypes: string[] = [
-    'nominal',
-    'metric',
-    'metric'
-  ];
-
 
 
   
@@ -58,7 +48,17 @@ export class TableDataService {
     return this.tableData[index][key];
   }
 
-  
+  setHvalue(key:string , type:string, select=null){
+    if ( select == null ){
+      let select = this.tableHeaders[key][1];
+    }
+    
+    this.tableHeaders[key] = [type,select];
+  }
+
+  getHvalue(key: string){
+    return this.tableHeaders[key];
+  }
 
   /**
  * returns a list [] consisting of all entries of the header which are not '' or undefined
@@ -93,13 +93,12 @@ export class TableDataService {
 
   /**Detects the variable type of all column*/   
   TypeDetect(){
-    this.tableTypes = [];
     let index = 0;
     // now we detect the types
     for ( let key in this.tableHeaders){
       const data : any[] = this.getColumnValues(key);
       const type : string = this.deduceColumnType(data);
-      this.tableTypes[index] = type;
+      this.tableHeaders[key][0] = type;
       index += 1;
     }
   }

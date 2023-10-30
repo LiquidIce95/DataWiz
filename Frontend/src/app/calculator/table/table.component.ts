@@ -104,7 +104,7 @@ export class TableComponent{
 
     // Update tableHeaders with the headers
     headers.forEach((header) => {
-      this.tableDataService.tableHeaders.push(header);
+      this.tableDataService.tableHeaders[header]= ['nominal',false];
     });
   }
 
@@ -119,7 +119,7 @@ export class TableComponent{
 
     // Clear tableData and tableHeaders
     this.tableDataService.tableData = [];
-    this.tableDataService.tableHeaders = [];
+    this.tableDataService.tableHeaders = {};
 
     
 
@@ -186,7 +186,7 @@ export class TableComponent{
           const rows = csvData.split('\n');
           
           this.tableDataService.tableData = [];
-          this.tableDataService.tableHeaders = [];
+          this.tableDataService.tableHeaders = {};
   
           // Initialize parsedData objects
           const initialRow = rows[0].split(this.delimiter);
