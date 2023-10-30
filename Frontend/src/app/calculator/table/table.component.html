@@ -16,7 +16,10 @@
         </select>
           
         <!-- Input for user-specified delimiter -->
-        <input class="width10" type="text" #customDelimiterInput (input)="setDelimiter(customDelimiterInput.value)" placeholder="Enter custom delimiter">
+        <input 
+        class="width10" type="text" #customDelimiterInput 
+        (input)="setDelimiter(customDelimiterInput.value)" 
+        placeholder="Enter custom delimiter">
           
 
         <div>2. Select Format type</div>

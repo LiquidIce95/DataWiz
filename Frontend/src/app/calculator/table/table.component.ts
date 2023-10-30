@@ -90,7 +90,6 @@ export class TableComponent{
    * which is the user input
    */
   headerCleanup(oldHeader: string, newHeader: string) {
-
     
     for (let i = 0; i < this.tableDataService.tableData.length; i++) {
       const rowData = this.tableDataService.tableData[i];

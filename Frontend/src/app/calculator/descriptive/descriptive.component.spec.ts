@@ -34,14 +34,16 @@ fdescribe('DescriptiveComponent', () => {
 
     it('cleanSelectedVariables should delte name', () => {
       component.selectedVariables = {'name': false, 'age': false, 'income':false};
-      component.tableDataService.tableData = [{'age':40, 'income':100}]
+      component.tableDataService.tableData = [{'age':40, 'income':100}];
+      component.tableDataService.tableHeaders = ['age','income'];
       component.cleanSelectedVariables();
       expect(component.selectedVariables).toEqual({'age':false, 'income':false});
     });
 
     it('cleanSelectedVariables should del everything', () => {
       component.selectedVariables = {'name': true, 'age': true, 'income':false};
-      component.tableDataService.tableData = [{'id':10, 'birthday':'19.05.1994'}]
+      component.tableDataService.tableData = [{'id':10, 'birthday':'19.05.1994'}];
+      component.tableDataService.tableHeaders = ['id', 'birthday'];
       component.cleanSelectedVariables();
       expect(component.selectedVariables).toEqual({});
     });
