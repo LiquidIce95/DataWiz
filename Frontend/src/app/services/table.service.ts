@@ -1,4 +1,6 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { last } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -128,8 +130,7 @@ export class TableDataService {
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
-    this.tableHeaders[newColumnName] = ['type', false];
-    this.tableTypes.push('nominal');
+    this.tableHeaders[newColumnName] = ['nominal', false];
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {
       this.tableData[i][newColumnName] = ''; // Set the new column to an empty string
@@ -163,12 +164,14 @@ export class TableDataService {
    * @yields deletes the last table header and its data in tableData
    */
   delColumn() {
-    if (this.tableHeaders.length > 0) {
-      const lastColumnName = this.tableHeaders[this.tableHeaders.length - 1];
+
+    let KEYS = Object.keys(this.tableHeaders);
+
+    if (KEYS.length > 0) {
+      const lastColumnName = KEYS[KEYS.length - 1];
   
       // Remove the column from the tableHeaders
-      let header : any = this.tableHeaders.pop();
-      delete this.tableTypes[header];
+      delete this.tableHeaders[lastColumnName];
   
       // Remove the corresponding data entries in all rows
       for (let i = 0; i < this.tableData.length; i++) {
@@ -184,7 +187,7 @@ export class TableDataService {
     // Clear cell values
     for (let i = 0; i < this.tableData.length; i++) {
       const rowData = this.tableData[i];
-      for (const header of this.tableHeaders) {
+      for (const header in this.tableHeaders) {
         rowData[header] = '';
       }
     }
@@ -199,24 +202,12 @@ export class TableDataService {
    */
   headerCleanup(oldHeader: string, newHeader: string) {
     
-    for (let i = 0; i < this.tableData.length; i++) {
-      const rowData = this.tableData[i];
-      
-      // Check if the oldHeader exists in the row
-      if (oldHeader in rowData) {
-        // Copy the data from the old header to the new header
-        rowData[newHeader] = rowData[oldHeader];
-        
-        // Delete the old header data
-        delete rowData[oldHeader];
-      }
-    }
+    let data = this.tableHeaders[oldHeader];
 
-    // After cleanup, update the header value
-    const index = this.tableHeaders.findIndex(header => header === oldHeader);
-    if (index !== -1) {
-      this.tableHeaders[index] = newHeader;
-    }
+    delete this.tableHeaders[oldHeader];
+
+    this.tableHeaders[newHeader] = data;
+
   }
 
   
