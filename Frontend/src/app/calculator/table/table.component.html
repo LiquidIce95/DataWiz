@@ -39,11 +39,11 @@
         <app-transform></app-transform>
     </div>
     <div class="tableActions">
-        <div class="tableActionsText" (click)="clearTab()">clear table</div>
-        <div class="tableActionsText" (click)="addColumn()">add column</div>
-        <div class="tableActionsText" (click)="addRow()">add row</div>
-        <div class="tableActionsText" (click)="delColumn()">delete column</div>
-        <div class="tableActionsText" (click)="delRow()">delete row</div>
+        <div class="tableActionsText" (click)="tableDataService.clearTab()">clear table</div>
+        <div class="tableActionsText" (click)="tableDataService.addColumn()">add column</div>
+        <div class="tableActionsText" (click)="tableDataService.addRow()">add row</div>
+        <div class="tableActionsText" (click)="tableDataService.delColumn()">delete column</div>
+        <div class="tableActionsText" (click)="tableDataService.delRow()">delete row</div>
         <div class="tableActionsText" (click)="toggleImportExportWin()">import/export data</div>
         <div class="tableActionsText" (click)="toggleTransData()">transform data</div>
     </div>
@@ -51,8 +51,8 @@
         <table>
             <thead>
                 <tr>
-                    <th *ngFor="let Type of tableDataService.tableTypes; let i = index">
-                        <select #selectElem (change)="onTypeChange(selectElem.value, i)">
+                    <th *ngFor="let Type of Object.keys(tableDataService.tableHeaders); let i = index">
+                        <select #selectElem (change)="tableDataService.onTypeChange(selectElem.value, i)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>
                             <option value="nominal">nominal</option>
