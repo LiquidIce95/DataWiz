@@ -14,15 +14,14 @@ export class TableDataService {
   ];
   
   /**
-   * INVARIANT: length of tableheaders and types is the same
-   * the headers read from left to right with respect of the 
-   * html table
+   * key is the column / variable name, value is a list containning
+   * the type and if its selected or not
    */
-  tableHeaders: string[] = [
-    'name',
-    'age',
-    'income'
-  ];
+  tableHeaders: {[key:string] : any[] } = {
+    'name':['nominal',false],
+    'age' :['metric',false],
+    'income' : ['metric',false]
+  };
 
   /**
    * this is also read left to right so the first entry is the left most 
@@ -35,7 +34,7 @@ export class TableDataService {
   ];
 
 
-  selce
+
   
   constructor() { }
 
@@ -95,12 +94,14 @@ export class TableDataService {
   /**Detects the variable type of all column*/   
   TypeDetect(){
     this.tableTypes = [];
+    let index = 0;
     // now we detect the types
-    this.tableHeaders.forEach((header,index) => {
-      const data : any[] = this.getColumnValues(header);
+    for ( let key in this.tableHeaders){
+      const data : any[] = this.getColumnValues(key);
       const type : string = this.deduceColumnType(data);
       this.tableTypes[index] = type;
-    });
+      index += 1;
+    }
   }
 
   /**
@@ -127,7 +128,7 @@ export class TableDataService {
   addColumn() {
     // Add a new column to the tableHeaders array
     const newColumnName = 'newColumnName'; // You can use any default name you prefer
-    this.tableHeaders.push(newColumnName);
+    this.tableHeaders[newColumnName] = ['type', false];
     this.tableTypes.push('nominal');
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {
@@ -141,8 +142,8 @@ export class TableDataService {
   addRow() {
     const newRow: { [key: string]: string } = {}; // Define the type of newRow
   
-    for (const header of this.tableHeaders) {
-      newRow[header] = ''; // Access header.value directly
+    for (const key in this.tableHeaders) {
+      newRow[key] = ''; // Access header.value directly
     }
   
     // Add the new row to the tableData array
