@@ -51,7 +51,13 @@ export class TableDataService {
    * @param value value to be set at that row and for tha column
    */
   setTValue(index : number, key: string, value : any): void{
-    this.tableData[index][key] = value;
+    if(index < this.tableData.length){
+      this.tableData[index][key] = value;
+    }
+  }
+
+  pushTValue(row: {[key:string]:any}){
+    this.tableData.push(row);
   }
 
   /**
@@ -70,9 +76,12 @@ export class TableDataService {
    * @param type the type of the variable which is represented by the header
    * @param select boolean value indicated whether the variable is selected for computation
    */
-  setHvalue(key:string , type:string, select=null){
+  setHvalue(key:string , type:string='', select:boolean | null =false){
     if ( select == null ){
-      let select = this.tableHeaders[key][1];
+      select = this.tableHeaders[key][1];
+    }
+    if(type == ''){
+      type = this.tableHeaders[key][0];
     }
     
     this.tableHeaders[key] = [type,select];
@@ -94,7 +103,7 @@ export class TableDataService {
    * select
    */
   getHvalue(key: string){
-    return this.tableHeaders[key];
+    return lodash.cloneDeep(this.tableHeaders[key]);
   }
 
 
@@ -248,6 +257,10 @@ export class TableDataService {
   
   }
 
+  delTable(){
+    this.tableData = [];
+    this.tableHeaders = {};
+  }
   
 
 }

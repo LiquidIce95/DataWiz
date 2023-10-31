@@ -57,10 +57,11 @@ export class TableComponent{
 
   exportToCSV() {
     // Prepare the CSV data
-    const headerRow = this.tableDataService.tableHeaders.map(header => header).join(',');
-    const csvRows = this.tableDataService.tableData.map(row => {
-      return this.tableDataService.tableHeaders.map(header => row[header]).join(',');
+    const headerRow = this.tableDataService.getKeys().join(',');
+    const csvRows = this.tableDataService.getTableData().map(row => {
+      return this.tableDataService.getKeys().map(header => row[header]).join(',');
     });
+
 
     // Combine header and rows into a single CSV string
     const csvData = [headerRow, ...csvRows].join('\n');
@@ -99,12 +100,12 @@ export class TableComponent{
         data[key] = this.tableDataService.convertToNumberIfPossible(data[key]);
       }
     }
-    this.tableDataService.tableData.push(data);
+    this.tableDataService.pushTValue(data);
     });
 
     // Update tableHeaders with the headers
     headers.forEach((header) => {
-      this.tableDataService.tableHeaders[header]= ['nominal',false];
+      this.tableDataService.setHvalue(header,'nominal',false);
     });
   }
 
@@ -118,8 +119,7 @@ export class TableComponent{
     const headers : string[] = rows[0].split(this.delimiter);
 
     // Clear tableData and tableHeaders
-    this.tableDataService.tableData = [];
-    this.tableDataService.tableHeaders = {};
+    this.tableDataService.delTable();
 
     
 
@@ -185,8 +185,7 @@ export class TableComponent{
           const csvData = e.target.result;
           const rows = csvData.split('\n');
           
-          this.tableDataService.tableData = [];
-          this.tableDataService.tableHeaders = {};
+          this.tableDataService.delTable();
   
           // Initialize parsedData objects
           const initialRow = rows[0].split(this.delimiter);

@@ -27,7 +27,7 @@ export class DescriptiveComponent {
     // Loop through all the keys in selectedVariables
     for (const key in this.selectedVariables) {
       // Check if this key exists in tableDataService.tableHeaders
-      if (this.tableDataService.tableHeaders.indexOf(key) === -1) {
+      if (this.tableDataService.getKeys().indexOf(key) === -1) {
         // Key does not exist, so delete it from selectedVariables
         delete this.selectedVariables[key];
       }
@@ -44,16 +44,16 @@ export class DescriptiveComponent {
     this.cleanSelectedVariables();
     
     // compute the Average for each header
-    this.tableDataService.tableHeaders.forEach((header,index)=>{
+    this.tableDataService.getKeys().forEach((key)=>{
       
-      if(this.selectedVariables[header] == true && this.tableDataService.tableTypes[index] == 'metric'){
-        let HeaderData = this.tableDataService.getColumnValues(header);
+      if(this.tableDataService.getHvalue(key)[0] == true && this.tableDataService.getHvalue(key)[0] == 'metric'){
+        let HeaderData = this.tableDataService.getColumnValues(key);
 
         if(HeaderData.length == 0){
-          this.averages[header] = undefined
+          this.averages[key] = undefined
         }
         else{
-          this.averages[header] = simpleStats.mean(HeaderData);
+          this.averages[key] = simpleStats.mean(HeaderData);
         }
       }
         

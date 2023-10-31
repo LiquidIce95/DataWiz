@@ -65,16 +65,17 @@
                     <th *ngFor="let key of tableDataService.getKeys()">
                         <input class="boldText" type="text" #inputElem 
                         [ngModel]="tableDataService.getHvalue(key)"
-                        (input)="tableDataService.changeHeaderName(key,$event.target.value)">
+                        (ngModelChange)="tableDataService.changeHeaderName(key,inputElem.value)">
                     </th>
                   </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of tableDataService.getTableData(); let index = 0 ;">
+                <tr *ngFor="let row of tableDataService.getTableData();let i = index">
                     <td *ngFor="let keys of tableDataService.getKeys()">
                         <input type="text" 
+                        #inputElem
                         [ngModel]="row[keys]" 
-                        (ngModelChange)="">
+                        (ngModelChange)="tableDataService.setTValue(i,keys,inputElem.value)">
                     </td>
                 </tr>
             </tbody>
