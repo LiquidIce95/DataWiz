@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as lodash from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class TableDataService {
     'income' : ['metric',false]
   };
 
-  
+
   constructor() { }
 
 
@@ -33,6 +34,14 @@ export class TableDataService {
    */
   getKeys():string[]{
     return Object.keys(this.tableHeaders);
+  }
+
+  getTableData():{ [key: string]: any }[]{
+    return lodash.cloneDeep(this.tableData);;
+  }
+
+  getTableHeaders():{[key:string] : any[] }{
+    return lodash.cloneDeep(this.tableHeaders);
   }
 
   /**
@@ -73,6 +82,7 @@ export class TableDataService {
       this.deduceColumnType(colData);
 
     }
+    
 
   }
 
@@ -95,12 +105,14 @@ export class TableDataService {
    * which is the user input
    */
   changeHeaderName(oldHeader: string, newHeader: string) {
+    if(newHeader != null){
+      let data = this.tableHeaders[oldHeader];
+
+      delete this.tableHeaders[oldHeader];
+  
+      this.tableHeaders[newHeader] = data;
+    }
     
-    let data = this.tableHeaders[oldHeader];
-
-    delete this.tableHeaders[oldHeader];
-
-    this.tableHeaders[newHeader] = data;
 
   }
 

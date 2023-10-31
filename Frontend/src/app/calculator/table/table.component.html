@@ -62,17 +62,19 @@
                 </tr>
                 <tr>
                     <!--IMPORTANT: we iterate through tableTypes because otherwise angualr would rerender on each change!!! -->
-                    <th *ngFor="let key of tableDataService.getKeys(); let i = index">
-                        <input class="boldText" type="text" #inputElem [ngModel]="tableDataService.tableHeaders[i]" 
-                        (ngModelChange)="headerCleanup(tableDataService.tableHeaders[i], inputElem.value)">
+                    <th *ngFor="let key of tableDataService.getKeys()">
+                        <input class="boldText" type="text" #inputElem 
+                        [ngModel]="tableDataService.getHvalue(key)"
+                        (input)="tableDataService.changeHeaderName(key,$event.target.value)">
                     </th>
                   </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of tableDataService.tableData">
-                    <td *ngFor="let header of tableDataService.tableHeaders">
-                        <input type="text" [ngModel]="row[header]" 
-                        (ngModelChange)="row[header] = tableDataService.convertToNumberIfPossible($event)">
+                <tr *ngFor="let row of tableDataService.getTableData(); let index = 0 ;">
+                    <td *ngFor="let keys of tableDataService.getKeys()">
+                        <input type="text" 
+                        [ngModel]="row[keys]" 
+                        (ngModelChange)="">
                     </td>
                 </tr>
             </tbody>
