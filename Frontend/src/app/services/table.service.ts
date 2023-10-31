@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as lodash from 'lodash';
+//import * as lodash from 'lodash'; CANNOT USE THIS
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +37,11 @@ export class TableDataService {
   }
 
   getTableData():{ [key: string]: any }[]{
-    return lodash.cloneDeep(this.tableData);;
+    return this.tableData;
   }
 
   getTableHeaders():{[key:string] : any[] }{
-    return lodash.cloneDeep(this.tableHeaders);
+    return this.tableHeaders;
   }
 
   /**
@@ -103,7 +103,7 @@ export class TableDataService {
    * select
    */
   getHvalue(key: string){
-    return lodash.cloneDeep(this.tableHeaders[key]);
+    return this.tableHeaders[key];
   }
 
 
