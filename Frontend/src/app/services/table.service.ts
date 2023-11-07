@@ -115,11 +115,20 @@ export class TableDataService {
    */
   changeHeaderName(oldHeader: string, newHeader: string) {
     if(newHeader != null){
-      let data = this.tableHeaders[oldHeader];
+      let Headerdata = this.tableHeaders[oldHeader];
+  
+      this.tableHeaders[newHeader] = Headerdata;
+
+      for(let k = 0; k < this.tableData.length; k++){
+        this.tableData[k][newHeader] = this.tableData[k][oldHeader];
+      }
 
       delete this.tableHeaders[oldHeader];
+
+      for( let key in this.tableHeaders){
+        console.log(key,this.tableHeaders[key]);
+      }
   
-      this.tableHeaders[newHeader] = data;
     }
     
 
