@@ -106,7 +106,6 @@ export class TableDataService {
     return this.tableHeaders[key];
   }
 
-
   
   /**
    * needed each time a header is modified by user
