@@ -102,3 +102,9 @@
     color: red;
     padding: 3vh;
 }
+
+.tableClass td input {
+  border: inherit; /* This will make the input field's border inherit the style from the table cell */
+  width: 100%;    /* This will make the input field fill the table cell */
+  height: 100%;   /* Adjust height as necessary, 100% may not always be the desired outcome */
+}

@@ -67,17 +67,17 @@
                         <input class="boldText" type="text" 
                         #inputElem 
                         [ngModel]="key"
-                        (ngModelChange)="tableDataService.changeHeaderName(key,inputElem.value)">
+                        (blur)="tableDataService.changeHeaderName(key,inputElem.value)">
                     </th>
                   </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of tableDataService.getTableData();let i = index">
                     <td *ngFor="let keys of tableDataService.getKeys()">
-                        <input type="text" 
+                        <input type="text" class="tableCell"
                         #inputElem
                         [ngModel]="row[keys]" 
-                        (ngModelChange)="tableDataService.setTValue(i,keys,inputElem.value)">
+                        (blur)="tableDataService.setTValue(i,keys,inputElem.value)">
                     </td>
                 </tr>
             </tbody>
