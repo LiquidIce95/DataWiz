@@ -107,6 +107,7 @@ export class TableDataService {
   }
 
 
+  
   /**
    * needed each time a header is modified by user
    * @param oldHeader the headername pre modification, is the key for this.tableHeaders
