@@ -51,6 +51,7 @@
         <table>
             <thead>
                 <tr>
+                    <!-- header types row-->
                     <th *ngFor="let key of tableDataService.getKeys(); let i = index">
                         <select #selectElem (change)="tableDataService.setHvalue(key,selectElem.value)">
                             <option value="auto">auto</option>
@@ -61,10 +62,11 @@
                     </th>
                 </tr>
                 <tr>
-                    <!--IMPORTANT: we iterate through tableTypes because otherwise angualr would rerender on each change!!! -->
+                    <!-- header row -->
                     <th *ngFor="let key of tableDataService.getKeys()">
-                        <input class="boldText" type="text" #inputElem 
-                        [ngModel]="tableDataService.getHvalue(key)"
+                        <input class="boldText" type="text" 
+                        #inputElem 
+                        [ngModel]="key"
                         (ngModelChange)="tableDataService.changeHeaderName(key,inputElem.value)">
                     </th>
                   </tr>
