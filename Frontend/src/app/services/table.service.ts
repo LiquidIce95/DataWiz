@@ -261,7 +261,8 @@ export class TableDataService {
    */
   getHeaderSelects():boolean[]{
     let selects = [];
-    for(let key in this.tableKeys){
+    for(let index in this.tableKeys){
+      let key = this.tableKeys[index];
       selects.push(this.tableHeaders[key][1]);
     }
     return selects;
