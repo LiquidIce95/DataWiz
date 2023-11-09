@@ -100,7 +100,7 @@ export class TableComponent{
         data[key] = this.tableDataService.convertToNumberIfPossible(data[key]);
       }
     }
-    this.tableDataService.pushTValue(data);
+    this.tableDataService.addRow(data);
     });
 
     // Update tableHeaders with the headers
