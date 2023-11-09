@@ -24,16 +24,23 @@ export class TableDataService {
     'income' : ['metric',false]
   };
 
+  /**
+   * we store the keys here to preserve order in the table display
+   * when we delete a key and assign a key to a value it alwys is appended
+   * at the end of the dicitonary so when user interacts with table the row order changes!
+   */
+  private tableKeys : string[] = ['name','age','income'];
 
   constructor() { }
 
 
   /**
    * 
-   * @returns headernames which are keys for tableHeaders
+   * @returns headernames which are keys for tableHeaders, preserves order even when modifying 
+   * the keys with changeheadername
    */
   getKeys():string[]{
-    return Object.keys(this.tableHeaders);
+    return this.tableKeys;
   }
 
   getTableData():{ [key: string]: any }[]{
@@ -56,6 +63,10 @@ export class TableDataService {
     }
   }
 
+  /**
+   * 
+   * @param row the row for the tableData 
+   */
   pushTValue(row: {[key:string]:any}){
     this.tableData.push(row);
   }
@@ -76,7 +87,7 @@ export class TableDataService {
    * @param type the type of the variable which is represented by the header
    * @param select boolean value indicated whether the variable is selected for computation
    */
-  setHvalue(key:string , type:string='', select:boolean | null =false){
+  setHvalue(key:string , type:string='', select:boolean | null =null){
     if ( select == null ){
       select = this.tableHeaders[key][1];
     }
@@ -125,9 +136,14 @@ export class TableDataService {
 
       delete this.tableHeaders[oldHeader];
 
-      for( let key in this.tableHeaders){
-        console.log(key,this.tableHeaders[key]);
-      }
+      //now the tableHeaders are up to date but not 
+      //tableKeys!
+
+      let index = this.getKeys().indexOf(oldHeader);
+
+      this.tableKeys[index] = newHeader;
+
+      //now tableKeys are also up to date
   
     }
     
@@ -166,7 +182,7 @@ export class TableDataService {
     return 'nominal'; // Default type
   }
 
-  /**Detects the variable type of all column*/   
+  /**Detects the variable type of all columns*/   
   TypeDetect(){
     let index = 0;
     // now we detect the types
@@ -208,6 +224,9 @@ export class TableDataService {
       this.tableData[i][newColumnName] = ''; // Set the new column to an empty string
     }
 
+    //now we need to add the column to 
+    this.tableKeys.push(newColumnName);
+    
   }
   /**
    * @yields adds one empty entry to each tablecolumn/header
