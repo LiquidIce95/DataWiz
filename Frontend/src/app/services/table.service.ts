@@ -43,10 +43,18 @@ export class TableDataService {
     return this.tableKeys;
   }
 
+  /**
+   * 
+   * @returns the entrie tableData 
+   */
   getTableData():{ [key: string]: any }[]{
     return this.tableData;
   }
 
+  /**
+   * 
+   * @returns the header dictionary
+   */
   getTableHeaders():{[key:string] : any[] }{
     return this.tableHeaders;
   }
@@ -59,7 +67,15 @@ export class TableDataService {
    */
   setTValue(index : number, key: string, value : any): void{
     if(index < this.tableData.length){
-      this.tableData[index][key] = value;
+      if(key in this.tableData[index]){
+        this.tableData[index][key] = value;
+      }
+      else {
+        throw new Error('the key is not in the dictionary');
+      }
+    } 
+    else {
+      throw new Error('index out of bounds');
     }
   }
 
@@ -67,10 +83,20 @@ export class TableDataService {
    * gets a value from tableData
    * @param index row index of tableData
    * @param key header / variable name / column name
-   * @returns value to be set at that row and for tha column
+   * @returns returns a copy of the value this.tableData[index][key]
    */
   getTValue(index : number, key : string ):void{
-    return this.tableData[index][key];
+    if(index < this.tableData.length){
+      if(key in this.tableData[index]){
+        return this.tableData[index][key];
+      }
+      else{
+        throw new Error('key not in dict');
+      }
+    }
+    else{
+      throw new Error('index out of bounds');
+    }
   }
 
   /**
