@@ -131,7 +131,7 @@ fdescribe('TableService', () => {
       let index = service['tableData'].length-1;
       expect(service['tableData'][index]).toEqual({ 'name': 'Bob', 'age': 40, 'income': 200 });
     });
-  });
+});
 
   describe('delRow()', () => {
     it('should delete the last row', () => {
@@ -216,9 +216,15 @@ fdescribe('TableService', () => {
   
   describe('getHeaderTypes()', () => {
     it('should return the types of all headers', () => {
+      let types =[];
+      for(let index in service['tableKeys']){
+        let key = service['tableKeys'][index];
+        types.push(service['tableHeaders'][key][0]);
+
+      }
+
       const headerTypes = service.getHeaderTypes();
-      const expectedTypes = service.getKeys().map(key => service.getTableHeaders()[key][0]);
-      expect(headerTypes).toEqual(expectedTypes);
+      expect(headerTypes).toEqual(types);
     });
   
     it('should return an empty array if no headers are present', () => {
@@ -297,8 +303,8 @@ fdescribe('TableService', () => {
       expect(service.deduceColumnType([30, 'John'])).toEqual('nominal');
     });
 
-    it('should return metric for empty array', () => {
-      expect(service.deduceColumnType([])).toEqual('metric');
+    it('should return nominal for empty array', () => {
+      expect(service.deduceColumnType([])).toEqual('nominal');
     });
   });
 
@@ -306,7 +312,11 @@ fdescribe('TableService', () => {
 
     it('mixed', () => {
       service.TypeDetect();
-      expect(service.getHeaderTypes()).toEqual(['nominal', 'metric', 'metric']);
+      expect(service['tableHeaders']).toEqual({
+        'name':['nominal',false],
+        'age' :['metric',false],
+        'income' : ['metric',false]
+      });
     });
 
     it('only non Numerical values', () => {
@@ -316,10 +326,14 @@ fdescribe('TableService', () => {
         { name: 'Alice', age: 'old', income: 'high' },
       ];
       service.TypeDetect();
-      expect(service.getHeaderTypes()).toEqual(['nominal', 'nominal', 'nominal']);
+      expect(service['tableHeaders']).toEqual({
+        'name':['nominal',false],
+        'age' :['nominal',false],
+        'income' : ['nominal',false]
+      });    
     });
 
-  });
+   });
   
 
   describe('convertToNumberIfPossible', () => {

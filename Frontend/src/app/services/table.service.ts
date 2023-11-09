@@ -247,7 +247,8 @@ export class TableDataService {
    */
   getHeaderTypes():string[]{
     let types = [];
-    for(let key in this.tableKeys){
+    for(let index in this.tableKeys){
+      let key = this.tableKeys[index];
       types.push(this.tableHeaders[key][0]);
     }
     return types;
@@ -325,21 +326,20 @@ export class TableDataService {
    * @returns the variable type 
    */
   deduceColumnType(columnValues: any[]): string {
-    if (columnValues.every(value => !isNaN(value))) {
+    if (columnValues.length != 0 && columnValues.every(value => !isNaN(value))) {
         return 'metric';
     }
     return 'nominal'; // Default type
   }
 
   /**Detects the variable type of all columns*/   
-  TypeDetect(){
-    let index = 0;
+  TypeDetect():void{
     // now we detect the types
-    for ( let key in this.tableKeys){
+    for ( let index in this.tableKeys){
+      let key = this.tableKeys[index];
       const data : any[] = this.getColumnValues(key);
       const type : string = this.deduceColumnType(data);
       this.tableHeaders[key][0] = type;
-      index += 1;
     }
   }
 
