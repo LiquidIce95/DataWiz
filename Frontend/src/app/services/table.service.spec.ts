@@ -121,12 +121,14 @@ fdescribe('TableService', () => {
     it('should add an empty row when no argument is provided', () => {
       service.addRow();
       expect(service.getTableData().length).toBe(3);
-      expect(service.getTableData()[2]).toEqual({ name: '', age: '', income: '' });
-    });
+      let index = service['tableData'].length-1;
+      expect(service['tableData'][index]).toEqual({ name: '', age: '', income: '' });
+    }); 
 
     it('should add a row with specified values', () => {
       service.addRow({ name: 'Bob', age: 40, income: 200 });
-      expect(service.getTableData()[2]).toEqual({ name: 'Bob', age: 40, income: 200 });
+      let index = service['tableData'].length-1;
+      expect(service['tableData'][index]).toEqual({ name: 'Bob', age: 40, income: 200 });
     });
   });
 

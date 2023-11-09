@@ -144,17 +144,18 @@ export class TableDataService {
     return structuredClone(this.tableHeaders[key]);
   }
 
-
-
   /**
+   * @param row the row to be added at last position in the
+   * tableData list
    * @yields adds one empty entry to each tablecolumn/header
+   * or the row specified 
    */
   addRow(row: {[key:string]:any}={}) {
 
     if(row = {}){
       const newRow: { [key: string]: string } = {}; // Define the type of newRow
   
-      for (const key in this.getKeys()) {
+      for (const key in this.tableKeys) {
         newRow[key] = ''; // Access header.value directly
       }
     
