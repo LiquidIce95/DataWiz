@@ -29,7 +29,11 @@ export class TableDataService {
    * when we delete a key and assign a key to a value it alwys is appended
    * at the end of the dicitonary so when user interacts with table the row order changes!
    */
-  private tableKeys : string[] = ['name','age','income'];
+  private tableKeys : string[] = [
+    'name',
+    'age',
+    'income'
+  ];
 
   constructor() { }
 
@@ -85,7 +89,7 @@ export class TableDataService {
    * @param key header / variable name / column name
    * @returns returns a copy of the value this.tableData[index][key]
    */
-  getTValue(index : number, key : string ):void{
+  getTValue(index : number, key : string ):any{
     if(index < this.tableData.length){
       if(key in this.tableData[index]){
         return this.tableData[index][key];
