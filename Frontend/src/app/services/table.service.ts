@@ -36,11 +36,11 @@ export class TableDataService {
 
   /**
    * 
-   * @returns headernames which are keys for tableHeaders, preserves order even when modifying 
+   * @returns a copy of headernames which are keys for tableHeaders, preserves order even when modifying 
    * the keys with changeheadername
    */
   getKeys():string[]{
-    return this.tableKeys;
+    return structuredClone(this.tableKeys);
   }
 
   /**
@@ -48,7 +48,7 @@ export class TableDataService {
    * @returns the entrie tableData 
    */
   getTableData():{ [key: string]: any }[]{
-    return this.tableData;
+    return structuredClone(this.tableData);
   }
 
   /**
@@ -56,7 +56,7 @@ export class TableDataService {
    * @returns the header dictionary
    */
   getTableHeaders():{[key:string] : any[] }{
-    return this.tableHeaders;
+    return structuredClone(this.tableHeaders);
   }
 
   /**
@@ -106,14 +106,19 @@ export class TableDataService {
    * @param select boolean value indicated whether the variable is selected for computation
    */
   setHvalue(key:string , type:string='', select:boolean | null =null){
-    if ( select == null ){
-      select = this.tableHeaders[key][1];
+    if(key in this.tableHeaders){
+      if ( select == null ){
+        select = this.tableHeaders[key][1];
+      }
+      if(type == ''){
+        type = this.tableHeaders[key][0];
+      }
+      this.tableHeaders[key] = [type,select];
+
     }
-    if(type == ''){
-      type = this.tableHeaders[key][0];
+    else {
+      throw new Error('key not in dict');
     }
-    
-    this.tableHeaders[key] = [type,select];
 
     if (type == 'auto'){
       let colData = this.getColumnValues(key);
@@ -127,11 +132,12 @@ export class TableDataService {
   /**
      * 
      * @param key gets a value from the tableHeaders
-     * @returns list with two elements first is type second is the value for 
+     * @returns a copy of the header values
+     * list with two elements first is type second is the value for 
      * select
      */
   getHvalue(key: string){
-    return this.tableHeaders[key];
+    return structuredClone(this.tableHeaders[key]);
   }
 
 
@@ -150,7 +156,8 @@ export class TableDataService {
     
       // Add the new row to the tableData array
       this.tableData.push(newRow);
-    } else {
+    } 
+    else {
       this.tableData.push(row);
     }
     
@@ -271,6 +278,7 @@ export class TableDataService {
   delTable(){
     this.tableData = [];
     this.tableHeaders = {};
+    this.tableKeys = [];
   }
   
   /**
