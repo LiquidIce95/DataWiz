@@ -237,7 +237,12 @@ export class TableDataService {
    * @returns the row with index of tableData
    */
   getRowValues(index : number): { [key: string]: any }{
-    return this.tableData[index];
+    if(index < this.tableData.length){
+      return this.tableData[index];
+    }
+    else{
+      throw new Error('index out of bounds')
+    }
   }
 
   /**

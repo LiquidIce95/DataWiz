@@ -71,12 +71,12 @@ fdescribe('TableService', () => {
   describe('setTValue()', () => {
     it('sets a value within index and key range',()=>{
       service.setTValue(0,'name','Alex');
-      expect(service['tableData'][0]['name'].toEqual('Alex'));
+      expect(service['tableData'][0]['name']).toEqual('Alex');
     });
 
     it('index out of bounds error',()=>{
       let index = service['tableData'].length+4;
-      service.setTValue(index,'name','Alex');
+      expect(()=> {service.setTValue(index,'name','Alex');}).toThrowError('index out of bounds');
 
     });
   });
@@ -209,7 +209,7 @@ fdescribe('TableService', () => {
     });
   
     it('should throw error when index is out of bounds', () => {
-      const rowIndex = service.getTableData().length; // Out of bounds
+      const rowIndex = service['tableData'].length; // Out of bounds
       expect(() => service.getRowValues(rowIndex)).toThrowError('index out of bounds');
     });
   });
