@@ -10,8 +10,8 @@ export class TableDataService {
   * the key is the name of the table headers
   */
   private tableData: { [key: string]: any }[] = [
-    { name: 'John', age: 30, income: 0 },
-    { name: 'Alice', age: 25, income: 100 },
+    { 'name': 'John', 'age': 30, 'income': 0 },
+    { 'name': 'Alice', 'age': 25, 'income': 100 },
   ];
   
   /**
@@ -150,7 +150,7 @@ export class TableDataService {
    * @yields adds one empty entry to each tablecolumn/header
    * or the row specified 
    */
-  addRow(row: {[key:string]:any}={}) {
+  addRow(row: {[key:string]:any}={}) :void{
 
     if(row = {}){
       const newRow: { [key: string]: string } = {}; // Define the type of newRow

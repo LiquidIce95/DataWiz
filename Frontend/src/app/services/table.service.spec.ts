@@ -8,8 +8,8 @@ fdescribe('TableService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(TableDataService);
     service['tableData'] = [
-    { name: 'John', age: 30, income: 0 },
-    { name: 'Alice', age: 25, income: 100 },
+    { 'name': 'John', 'age': 30, 'income': 0 },
+    { 'name': 'Alice', 'age': 25, 'income': 100 },
     ];
 
     service['tableHeaders'] = {
@@ -119,16 +119,17 @@ fdescribe('TableService', () => {
 
   describe('addRow()', () => {
     it('should add an empty row when no argument is provided', () => {
+      let initialLength = service['tableData'].length;
       service.addRow();
-      expect(service.getTableData().length).toBe(3);
+      expect(service.getTableData().length).toBe(initialLength+1);
       let index = service['tableData'].length-1;
-      expect(service['tableData'][index]).toEqual({ name: '', age: '', income: '' });
+      expect(service['tableData'][index]).toEqual({ 'name': '', 'age': '', 'income': '' });
     }); 
 
     it('should add a row with specified values', () => {
       service.addRow({ name: 'Bob', age: 40, income: 200 });
       let index = service['tableData'].length-1;
-      expect(service['tableData'][index]).toEqual({ name: 'Bob', age: 40, income: 200 });
+      expect(service['tableData'][index]).toEqual({ 'name': 'Bob', 'age': 40, 'income': 200 });
     });
   });
 
