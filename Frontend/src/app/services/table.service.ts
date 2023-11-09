@@ -150,13 +150,13 @@ export class TableDataService {
    * @yields adds one empty entry to each tablecolumn/header
    * or the row specified 
    */
-  addRow(row: {[key:string]:any}={}) :void{
+  addRow(row: {[key:string]:any} | null = null) :void{
 
-    if(row = {}){
-      const newRow: { [key: string]: string } = {}; // Define the type of newRow
+    if(row == null){
+      const newRow: { [key: string]: string } = {};
   
-      for (const key in this.tableKeys) {
-        newRow[key] = ''; // Access header.value directly
+      for (const index in this.tableKeys) {
+        newRow[this.tableKeys[index]] = '';
       }
     
       // Add the new row to the tableData array
