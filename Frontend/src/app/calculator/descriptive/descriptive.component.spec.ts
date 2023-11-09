@@ -27,23 +27,23 @@ fdescribe('DescriptiveComponent', () => {
   describe('cleanSeelctedVariables' , ()=>{
     it('cleanSelectedVariables should do nothing', () => {
       component.selectedVariables = {'name': true, 'age': true, 'income':false};
-      component.tableDataService.tableData = [{'name':'bob','age':40, 'income':100}]
+      component.tableDataService['tableData'] = [{'name':'bob','age':40, 'income':100}]
       component.cleanSelectedVariables();
       expect(component.selectedVariables).toEqual({'name': true, 'age':true, 'income':false});
     });
 
     it('cleanSelectedVariables should delte name', () => {
       component.selectedVariables = {'name': false, 'age': false, 'income':false};
-      component.tableDataService.tableData = [{'age':40, 'income':100}];
-      component.tableDataService.tableHeaders = ['age','income'];
+      component.tableDataService['tableData'] = [{'age':40, 'income':100}];
+      component.tableDataService['tableKeys'] = ['age','income'];
       component.cleanSelectedVariables();
       expect(component.selectedVariables).toEqual({'age':false, 'income':false});
     });
 
     it('cleanSelectedVariables should del everything', () => {
       component.selectedVariables = {'name': true, 'age': true, 'income':false};
-      component.tableDataService.tableData = [{'id':10, 'birthday':'19.05.1994'}];
-      component.tableDataService.tableHeaders = ['id', 'birthday'];
+      component.tableDataService['tableData'] = [{'id':10, 'birthday':'19.05.1994'}];
+      component.tableDataService['tableKeys'] = ['id', 'birthday'];
       component.cleanSelectedVariables();
       expect(component.selectedVariables).toEqual({});
     });
@@ -54,7 +54,7 @@ fdescribe('DescriptiveComponent', () => {
   describe('getAverages',()=>{
 
     it('single value', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         
@@ -65,7 +65,7 @@ fdescribe('DescriptiveComponent', () => {
     });
   
     it('compute average', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         { name: 'Alice', age: 25, income: 100 },
@@ -76,7 +76,7 @@ fdescribe('DescriptiveComponent', () => {
     });
 
     it('ignore unselected Var', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         { name: 'Alice', age: 25, income: 100 },
@@ -90,7 +90,7 @@ fdescribe('DescriptiveComponent', () => {
 
   describe('getAverageKeys',()=>{
     it('one key', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         { name: 'Alice', age: 25, income: 100 },
@@ -101,7 +101,7 @@ fdescribe('DescriptiveComponent', () => {
     });
 
     it('no key', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         { name: 'Alice', age: 25, income: 100 },
@@ -113,7 +113,7 @@ fdescribe('DescriptiveComponent', () => {
     });
 
     it('two keys', () => {
-      component.tableDataService.tableData =
+      component.tableDataService['tableData'] =
       [
         { name: 'John', age: 30, income: 0 },
         { name: 'Alice', age: 25, income: 100 },

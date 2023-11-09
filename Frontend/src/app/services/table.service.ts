@@ -108,6 +108,8 @@ export class TableDataService {
     return this.tableHeaders[key];
   }
 
+
+
   /**
    * @yields adds one empty entry to each tablecolumn/header
    */
@@ -198,6 +200,32 @@ export class TableDataService {
    */
   getRowValues(index : number): { [key: string]: any }{
     return this.tableData[index];
+  }
+
+  /**
+   * 
+   * @returns the types of all headers in the same order as the headers themselves
+   * in the tableKeys list
+   */
+  getHeaderTypes():string[]{
+    let types = [];
+    for(let key in this.tableKeys){
+      types.push(this.tableHeaders[key][0]);
+    }
+    return types;
+  }
+
+  /**
+   * 
+   * @returns returns the selection state of all headers as in the same order in 
+   * the tableKeys list
+   */
+  getHeaderSelects():boolean[]{
+    let selects = [];
+    for(let key in this.tableKeys){
+      selects.push(this.tableHeaders[key][1]);
+    }
+    return selects;
   }
 
   /**

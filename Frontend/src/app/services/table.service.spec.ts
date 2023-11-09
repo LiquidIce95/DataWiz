@@ -13,6 +13,9 @@ fdescribe('TableService', () => {
     expect(service).toBeTruthy();
   });
 
+
+
+  
   describe('getColumnValues', () => {
     it('should return correct values for name column', () => {
       expect(service.getColumnValues('name')).toEqual(['John', 'Alice'])
@@ -53,17 +56,17 @@ fdescribe('TableService', () => {
 
     it('mixed', () => {
       service.TypeDetect();
-      expect(service.tableTypes).toEqual(['nominal', 'metric', 'metric']);
+      expect(service.getHeaderTypes()).toEqual(['nominal', 'metric', 'metric']);
     });
 
     it('only non Numerical values', () => {
-      service.tableData = 
+      service['tableData'] = 
       [
         { name: 'John', age: 'young', income: 'low' },
         { name: 'Alice', age: 'old', income: 'high' },
       ];
       service.TypeDetect();
-      expect(service.tableTypes).toEqual(['nominal', 'nominal', 'nominal']);
+      expect(service.getHeaderTypes()).toEqual(['nominal', 'nominal', 'nominal']);
     });
 
   });
