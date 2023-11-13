@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { TableDataService } from '../../services/table.service';
 import * as simpleStats from 'simple-statistics';
+import { AuxiliaryService } from 'src/app/services/auxiliary.service';
 
 
 @Component({
   selector: 'app-descriptive',
   templateUrl: './descriptive.component.html',
-  styleUrls: ['../../globalStyles.css','./descriptive.component.css']
+  styleUrls: ['../../globalStyles.css','./descriptive.component.css'],
+  providers:[AuxiliaryService]
+
 })
 export class DescriptiveComponent {
-  constructor(public tableDataService: TableDataService) {}
-  selectedVariables: { [key: string]: boolean } = {};
+  constructor(public tableDataService: TableDataService, public auxiliaryService : AuxiliaryService) {}
 
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   /**
@@ -19,20 +21,7 @@ export class DescriptiveComponent {
    */
   averages: { [key: string]: (number | undefined)} = {};
 
-  /**
-   * @yields deletes the variables in this.selectedVariables which are not present 
-   * in the tableDataService.tableHeaders
-   */
-  cleanSelectedVariables():void {
-    // Loop through all the keys in selectedVariables
-    for (const key in this.selectedVariables) {
-      // Check if this key exists in tableDataService.tableHeaders
-      if (this.tableDataService.getKeys().indexOf(key) === -1) {
-        // Key does not exist, so delete it from selectedVariables
-        delete this.selectedVariables[key];
-      }
-    }
-  }
+  
   // computes the averages for the selected metric variables
   /**
    * @yields computes the average for each selected metric variable (tableheader)
@@ -41,12 +30,13 @@ export class DescriptiveComponent {
   getAverages() : void {
 
     this.averages = {};
-    this.cleanSelectedVariables();
     
     // compute the Average for each header
     this.tableDataService.getKeys().forEach((key)=>{
+
+      let VarInfo = this.tableDataService.getHvalue(key);
       
-      if(this.tableDataService.getHvalue(key)[0] == true && this.tableDataService.getHvalue(key)[0] == 'metric'){
+      if(VarInfo[1] == true && VarInfo[0] == 'metric'){
         let HeaderData = this.tableDataService.getColumnValues(key);
 
         if(HeaderData.length == 0){

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, assertInInjectionContext } from '@angular/core';
+import { AuxiliaryService } from './auxiliary.service';
 //import * as lodash from 'lodash'; CANNOT USE THIS
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TableDataService {
   /** Cell entries first dimension is row then the key correspond to a header 
@@ -35,7 +36,10 @@ export class TableDataService {
     'income'
   ];
 
-  constructor() { }
+  private aux : AuxiliaryService;
+  constructor( ) {
+    this.aux = new AuxiliaryService();
+   }
 
 
   /**
@@ -70,6 +74,7 @@ export class TableDataService {
    * @param value value to be set at that row and for tha column
    */
   setTValue(index : number, key: string, value : any): void{
+    
     if(index < this.tableData.length){
       if(key in this.tableData[index]){
         this.tableData[index][key] = value;
@@ -110,20 +115,17 @@ export class TableDataService {
    * @param select boolean value indicated whether the variable is selected for computation
    */
   setHvalue(key:string , type:string='', select:boolean | null =null){
-    if(key in this.tableHeaders){
-      if ( select == null ){
-        select = this.tableHeaders[key][1];
-      }
-      if(type == ''){
-        type = this.tableHeaders[key][0];
-      }
-      this.tableHeaders[key] = [type,select];
 
-    }
-    else {
-      throw new Error('key not in dict');
-    }
+    this.aux.assert(key in this.tableHeaders,'key not in dict');
 
+    if ( select == null ){
+      select = this.tableHeaders[key][1];
+    }
+    if(type == ''){
+      type = this.tableHeaders[key][0];
+    }
+    this.tableHeaders[key] = [type,select];
+    
     if (type == 'auto'){
       let colData = this.getColumnValues(key);
       this.deduceColumnType(colData);
@@ -237,12 +239,10 @@ export class TableDataService {
    * @returns the row with index of tableData
    */
   getRowValues(index : number): { [key: string]: any }{
-    if(index < this.tableData.length){
-      return this.tableData[index];
-    }
-    else{
-      throw new Error('index out of bounds')
-    }
+    this.aux.assert(index < this.tableData.length,'index out of bounds');
+
+    return this.tableData[index];
+   
   }
 
   /**

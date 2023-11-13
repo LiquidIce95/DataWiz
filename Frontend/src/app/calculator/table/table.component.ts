@@ -1,16 +1,18 @@
 import { Component, Renderer2 } from '@angular/core';
 import { TableDataService } from '../../services/table.service';
+import { AuxiliaryService } from 'src/app/services/auxiliary.service';
 
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['../../globalStyles.css', './table.component.css']
+  styleUrls: ['../../globalStyles.css', './table.component.css'],
+  providers:[AuxiliaryService]
 })
 export class TableComponent{
   
 
-  constructor(private renderer: Renderer2,public tableDataService: TableDataService) {}  
+  constructor(private renderer: Renderer2,public tableDataService: TableDataService,public auxiliaryService : AuxiliaryService) {}  
 
   // DATA TRANSFORM FEATURE------------------------------------------------------------------------
   /**
@@ -51,6 +53,10 @@ export class TableComponent{
     this.delimiter = delimiter;
   }
   
+  /**
+   * 
+   * @param FormType alignment of headers and data in the file
+   */
   setFormType(FormType : string){
     this.FormType = FormType;
   }
