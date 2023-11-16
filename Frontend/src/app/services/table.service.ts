@@ -51,13 +51,13 @@ export class TableDataService {
     return structuredClone(this.tableKeys);
   }
 
-  /**
-   * 
-   * @returns the entrie tableData 
-   */
-  getTableData():{ [key: string]: any }[]{
-    return structuredClone(this.tableData);
-  }
+    /**
+     * 
+     * @returns the entrie tableData 
+     */
+    getTableData():{ [key: string]: any }[]{
+      return structuredClone(this.tableData);
+    }
 
   /**
    * 
