@@ -52,7 +52,7 @@
             <thead>
                 <tr>
                     <!-- header types row-->
-                    <th *ngFor="let key of tableDataService.getKeys()">
+                    <th *ngFor="let key of tableDataService['tableKeys']">
                         <select #selectElem (change)="tableDataService.setHvalue(key,selectElem.value)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <!-- header row -->
-                    <th *ngFor="let key of tableDataService.getKeys()">
+                    <th *ngFor="let key of tableDataService['tableKeys']">
                         <input class="boldText" type="text" 
                         #inputElem 
                         [ngModel]="key"
@@ -72,8 +72,8 @@
                   </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of tableDataService.getTableData();let i = index">
-                    <td *ngFor="let keys of tableDataService.getKeys()">
+                <tr *ngFor="let row of tableDataService['tableData'];let i = index">
+                    <td *ngFor="let keys of tableDataService['tableKeys']">
                         <input type="text" class="tableCell"
                         #inputElem
                         [ngModel]="row[keys]" 
