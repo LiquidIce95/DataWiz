@@ -52,7 +52,7 @@
             <thead>
                 <tr>
                     <!-- header types row-->
-                    <th *ngFor="let key of tableDataService['tableKeys']">
+                    <th *ngFor="let key of tableDataService.getKeys()">
                         <select #selectElem (change)="tableDataService.setHvalue(key,selectElem.value)">
                             <option value="auto">auto</option>
                             <option value="metric">metric</option>

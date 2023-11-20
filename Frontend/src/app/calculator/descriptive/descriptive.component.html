@@ -3,7 +3,7 @@
 
     <div>
         <div class="smalltitle">metric variables:</div>
-        <ng-container *ngFor="let key of tableDataService['tableKeys']; let i = index">
+        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
           <div *ngIf="tableDataService.getHvalue(key)[0] === 'metric'">
             <input type="checkbox" 
                    #inputElem
@@ -17,7 +17,7 @@
       
       <div>
         <div class="smalltitle">ordinal variables:</div>
-        <ng-container *ngFor="let key of tableDataService['tableKeys']; let i = index">
+        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
           <div *ngIf="tableDataService.getHvalue(key)[0]  === 'ordinal'">
             <input type="checkbox" 
                    #inputElem
@@ -31,7 +31,7 @@
       
       <div>
         <div class="smalltitle">nominal variables:</div>
-        <ng-container *ngFor="let key of tableDataService['tableKeys']; let i = index">
+        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
           <div *ngIf="tableDataService.getHvalue(key)[0]  === 'nominal'">
             <input type="checkbox" 
                    #inputElem
