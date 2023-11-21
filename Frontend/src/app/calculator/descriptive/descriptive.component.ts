@@ -223,4 +223,58 @@ getgeoMeanKeys(): string[] {
   return keys;
 }  
 
+
+
+// mode / highest occurences COMPUTATION----------------------------------------------------------------------------------
+/**
+   * dictonary to store the computed averages
+   * key is the variable name (tableheader)
+   */
+modes: { [key: string]: (number | undefined)} = {};
+
+  
+// computes the averages for the selected metric variables
+/**
+ * @yields computes the average for each selected metric variable (tableheader)
+ * and stores them in the this.averages dict
+ */
+getMode() : void {
+
+  this.modes = {};
+  
+  // compute the Average for each header
+  this.tableDataService.getKeys().forEach((key)=>{
+
+    let VarInfo = this.tableDataService.getHvalue(key);
+    
+    if(VarInfo[1] == true && VarInfo[0] == 'metric'){
+      let HeaderData = this.tableDataService.getColumnValues(key);
+
+      if(HeaderData.length == 0){
+        this.modes[key] = undefined
+      }
+      else{
+        this.modes[key] = simpleStats.mode(HeaderData);
+      }
+    }
+      
+
+  });
+}
+
+/**
+ * 
+ * @returns all the keys for the dict this.medians
+ */
+getModeKeys(): string[] {
+  this.getMode();
+  let keys : string[] = [];
+
+  for (const key in this.modes){
+     keys.push(key);
+  }
+  return keys;
+}  
+
+
 }

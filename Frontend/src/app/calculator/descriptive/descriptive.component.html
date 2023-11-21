@@ -69,3 +69,9 @@
 <div *ngFor="let key of getgeoMeanKeys()">
   {{ key }} : {{ geoMeans[key] }}
 </div>
+
+
+<div class="smalltitle">highest occurences / modes</div>
+<div *ngFor="let key of getModeKeys()">
+  {{ key }} : {{ modes[key] }}
+</div>
