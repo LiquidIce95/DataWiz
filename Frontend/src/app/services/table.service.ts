@@ -75,17 +75,15 @@ export class TableDataService {
    */
   setTValue(index : number, key: string, value : any): void{
     
-    if(index < this.tableData.length){
-      if(key in this.tableData[index]){
-        this.tableData[index][key] = value;
-      }
-      else {
-        throw new Error('the key is not in the dictionary');
-      }
-    } 
-    else {
-      throw new Error('index out of bounds');
-    }
+    value = this.convertToNumberIfPossible(value);
+    this.aux.assert(index < this.tableData.length,'the key is not in the dictionary');
+    this.aux.assert(key in this.tableData[index],'the key is not in the dictionary');
+
+
+    this.tableData[index][key] = value;
+
+    this.TypeDetect();
+
   }
 
   /**
@@ -95,17 +93,11 @@ export class TableDataService {
    * @returns returns a copy of the value this.tableData[index][key]
    */
   getTValue(index : number, key : string ):any{
-    if(index < this.tableData.length){
-      if(key in this.tableData[index]){
-        return this.tableData[index][key];
-      }
-      else{
-        throw new Error('key not in dict');
-      }
-    }
-    else{
-      throw new Error('index out of bounds');
-    }
+
+    this.aux.assert(index < this.tableData.length,'the key is not in the dictionary');
+    this.aux.assert(key in this.tableData[index],'the key is not in the dictionary');
+    return this.tableData[index][key];
+
   }
 
   /**
@@ -121,18 +113,18 @@ export class TableDataService {
     if ( select == null ){
       select = this.tableHeaders[key][1];
     }
+
+
     if(type == ''){
       type = this.tableHeaders[key][0];
     }
-    this.tableHeaders[key] = [type,select];
-    
-    if (type == 'auto'){
+    else if (type == 'auto'){
       let colData = this.getColumnValues(key);
-      this.deduceColumnType(colData);
+      type = this.deduceColumnType(colData);
 
     }
-    
 
+    this.tableHeaders[key] = [type,select];
   }
 
   /**
@@ -186,7 +178,8 @@ export class TableDataService {
    */
   addColumn() {
     // Add a new column to the tableHeaders array
-    const newColumnName = 'column'; // You can use any default name you prefer
+    let size = this.tableKeys.length;
+    const newColumnName = `column ${size}`; // You can use any default name you prefer
     this.tableHeaders[newColumnName] = ['nominal', false];
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {

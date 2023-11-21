@@ -8,7 +8,7 @@
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
-                 [ngModel]="tableDataService['tableKeys'][i]" 
+                 [ngModel]="tableDataService['tableHeaders'][key][1]" 
                  (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
           {{ key }}
         </div>
@@ -22,7 +22,7 @@
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
-                 [ngModel]="tableDataService['tableKeys'][i]" 
+                 [ngModel]="tableDataService['tableHeaders'][key][1]" 
                  (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
           {{ key }}
         </div>
@@ -36,7 +36,7 @@
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
-                 [ngModel]="tableDataService['tableKeys'][i]"  
+                 [ngModel]="tableDataService['tableHeaders'][key][1]"  
                  (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
           {{ key }}
         </div>
