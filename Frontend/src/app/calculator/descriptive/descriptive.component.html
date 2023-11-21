@@ -51,3 +51,21 @@
 <div *ngFor="let key of getAverageKeys()">
   {{ key }} : {{ averages[key] }}
 </div>
+
+<div class="smalltitle">Median</div>
+<div *ngFor="let key of getMedianKeys()">
+  {{ key }} : {{ medians[key] }}
+</div>
+
+
+<div class="smalltitle">Variance</div>
+<div *ngFor="let key of getVarianceKeys()">
+  {{ key }} : {{ Variances[key] }}
+</div>
+
+
+
+<div class="smalltitle">Geometric Mean</div>
+<div *ngFor="let key of getgeoMeanKeys()">
+  {{ key }} : {{ geoMeans[key] }}
+</div>

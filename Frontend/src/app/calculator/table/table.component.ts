@@ -113,6 +113,8 @@ export class TableComponent{
     headers.forEach((header) => {
       this.tableDataService.setHvalue(header,'nominal',false);
     });
+
+    this.tableDataService.TypeDetect();
   }
 
   // imports the csv file and stores it parsedData and headers
@@ -213,7 +215,6 @@ export class TableComponent{
   
           this.UpdateTable(parsedData, headers);
           this.IEwindow = false;
-          this.tableDataService.TypeDetect();
         };
   
         reader.readAsText(selectedFile);
