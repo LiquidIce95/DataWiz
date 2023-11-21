@@ -150,18 +150,19 @@ fdescribe('TableService', () => {
 
   describe('addColumn()', () => {
     it('should add a new column to the table', () => {
-      const initialColumnCount = Object.keys(service.getTableHeaders()).length;
+      const initialColumnCount = service['tableKeys'].length;
       service.addColumn();
       const columnCountAfterAddition = Object.keys(service.getTableHeaders()).length;
       expect(columnCountAfterAddition).toEqual(initialColumnCount + 1);
-      expect(service.getTableHeaders()['newColumnName']).toBeDefined();
+      expect(service.getTableHeaders()[`column ${initialColumnCount + 1}`]).toBeDefined();
     });
   
     it('should initialize new column with empty values for all rows', () => {
+      const initialColumnCount = service['tableKeys'].length;
       service.addColumn();
       service.getTableData().forEach(row => {
-        expect(row['newColumnName']).toBeDefined();
-        expect(row['newColumnName']).toEqual('');
+        expect(row[`column ${initialColumnCount + 1}`]).toBeDefined();
+        expect(row[`column ${initialColumnCount + 1}`]).toEqual('');
       });
     });
   });

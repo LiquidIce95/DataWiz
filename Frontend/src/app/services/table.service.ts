@@ -76,7 +76,7 @@ export class TableDataService {
   setTValue(index : number, key: string, value : any): void{
     
     value = this.convertToNumberIfPossible(value);
-    this.aux.assert(index < this.tableData.length,'the key is not in the dictionary');
+    this.aux.assert(index < this.tableData.length,'index out of bounds');
     this.aux.assert(key in this.tableData[index],'the key is not in the dictionary');
 
 
@@ -94,8 +94,8 @@ export class TableDataService {
    */
   getTValue(index : number, key : string ):any{
 
-    this.aux.assert(index < this.tableData.length,'the key is not in the dictionary');
-    this.aux.assert(key in this.tableData[index],'the key is not in the dictionary');
+    this.aux.assert(index < this.tableData.length,'index out of bounds');
+    this.aux.assert(key in this.tableData[index],'key not in dict');
     return this.tableData[index][key];
 
   }
@@ -179,7 +179,7 @@ export class TableDataService {
   addColumn() {
     // Add a new column to the tableHeaders array
     let size = this.tableKeys.length;
-    const newColumnName = `column ${size}`; // You can use any default name you prefer
+    const newColumnName = `column ${size+1}`; // You can use any default name you prefer
     this.tableHeaders[newColumnName] = ['nominal', false];
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {
