@@ -186,7 +186,7 @@ export class TableDataService {
    */
   addColumn() {
     // Add a new column to the tableHeaders array
-    const newColumnName = 'column'+this.s; // You can use any default name you prefer
+    const newColumnName = 'column'; // You can use any default name you prefer
     this.tableHeaders[newColumnName] = ['nominal', false];
     // Initialize data entries for the new column in all rows
     for (let i = 0; i < this.tableData.length; i++) {
