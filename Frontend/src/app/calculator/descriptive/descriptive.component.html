@@ -1,53 +1,53 @@
 <div>
-    <div class="tutText">3. Select Inputs</div>
+  <div class="tutText">3. Select Inputs</div>
 
+  <div>
+      <div class="smalltitle">metric variables:</div>
+      <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
+        <div *ngIf="tableDataService.getHvalue(key)[0] === 'metric'">
+          <input type="checkbox" 
+                 #inputElem
+                 [value]="key" 
+                 [ngModel]="tableDataService['tableKeys'][i]" 
+                 (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
+          {{ key }}
+        </div>
+      </ng-container>
+    </div>    
+    
     <div>
-        <div class="smalltitle">metric variables:</div>
-        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-          <div *ngIf="tableDataService.getHvalue(key)[0] === 'metric'">
-            <input type="checkbox" 
-                   #inputElem
-                   [value]="key" 
-                   [(ngModel)]="tableDataService['tableKeys'][i]" 
-                   (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
-            {{ key }}
-          </div>
-        </ng-container>
-      </div>    
-      
-      <div>
-        <div class="smalltitle">ordinal variables:</div>
-        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-          <div *ngIf="tableDataService.getHvalue(key)[0]  === 'ordinal'">
-            <input type="checkbox" 
-                   #inputElem
-                   [value]="key" 
-                   [(ngModel)]="tableDataService['tableKeys'][i]" 
-                   (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
-            {{ key }}
-          </div>
-        </ng-container>
-      </div>
-      
-      <div>
-        <div class="smalltitle">nominal variables:</div>
-        <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-          <div *ngIf="tableDataService.getHvalue(key)[0]  === 'nominal'">
-            <input type="checkbox" 
-                   #inputElem
-                   [value]="key" 
-                   [(ngModel)]="tableDataService['tableKeys'][i]"  
-                   (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
-            {{ key }}
-          </div>
-        </ng-container>
-      </div>
-      
-      
+      <div class="smalltitle">ordinal variables:</div>
+      <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
+        <div *ngIf="tableDataService.getHvalue(key)[0]  === 'ordinal'">
+          <input type="checkbox" 
+                 #inputElem
+                 [value]="key" 
+                 [ngModel]="tableDataService['tableKeys'][i]" 
+                 (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
+          {{ key }}
+        </div>
+      </ng-container>
+    </div>
+    
+    <div>
+      <div class="smalltitle">nominal variables:</div>
+      <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
+        <div *ngIf="tableDataService.getHvalue(key)[0]  === 'nominal'">
+          <input type="checkbox" 
+                 #inputElem
+                 [value]="key" 
+                 [ngModel]="tableDataService['tableKeys'][i]"  
+                 (change)="tableDataService.setHvalue(key,'',inputElem.checked)">
+          {{ key }}
+        </div>
+      </ng-container>
+    </div>
+    
+    
 </div>
 
 <div class="tutText">4. View Results</div>
 <div class="smalltitle">average</div>
 <div *ngFor="let key of getAverageKeys()">
-    {{ key }} : {{ averages[key] }}
+  {{ key }} : {{ averages[key] }}
 </div>
