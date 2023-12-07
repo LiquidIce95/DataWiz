@@ -277,4 +277,61 @@ getModeKeys(): string[] {
 }  
 
 
+
+// standarddeviation / highest occurences COMPUTATION----------------------------------------------------------------------------------
+/**
+   * dictonary to store the computed averages
+   * key is the variable name (tableheader)
+  */
+
+stddevs: { [key: string]: (number | undefined)} = {};
+
+  
+// computes the averages for the selected metric variables
+/**
+ * @yields computes the average for each selected metric variable (tableheader)
+ * and stores them in the this.averages dict
+ */
+getStd() : void {
+
+  this.stddevs = {};
+  
+  // compute the Average for each header
+  this.tableDataService.getKeys().forEach((key)=>{
+
+    let VarInfo = this.tableDataService.getHvalue(key);
+    
+    if(VarInfo[1] == true && VarInfo[0] == 'metric'){
+      let HeaderData = this.tableDataService.getColumnValues(key);
+
+      if(HeaderData.length == 0){
+        this.stddevs[key] = undefined
+      }
+      else{
+        this.stddevs[key] = simpleStats.standardDeviation(HeaderData);
+      }
+    }
+      
+
+  });
 }
+
+/**
+ * 
+ * @returns all the keys for the dict this.medians
+ */
+getStdKeys(): string[] {
+  this.getStd();
+  let keys : string[] = [];
+
+  for (const key in this.stddevs){
+     keys.push(key);
+  }
+  return keys;
+}  
+
+
+}
+
+
+
