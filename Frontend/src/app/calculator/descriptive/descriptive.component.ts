@@ -14,6 +14,9 @@ import { AuxiliaryService } from 'src/app/services/auxiliary.service';
 export class DescriptiveComponent {
   constructor(public tableDataService: TableDataService, public auxiliaryService : AuxiliaryService) {}
 
+  resultTable: { [key: string]: any }[] = [];
+
+  
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   /**
    * dictonary to store the computed averages
@@ -330,6 +333,61 @@ getStdKeys(): string[] {
   return keys;
 }  
 
+
+
+/**
+ * 
+ * @returns calls all functions and then reuturns the computations
+ */
+createResultTable(): { [key: string]: any }[] {
+    this.resultTable = [];
+    // Call all computation functions to update their respective dictionaries
+    this.getAverages();
+    this.getMedian();
+    this.getVariance();
+    this.getgeoMean();
+    this.getMode();
+    this.getStd();
+  
+    // Initialize the result table array
+    // Iterate over each key in the averages (assuming all dicts have the same keys)
+    for (const key of this.tableDataService.getKeys()) {  // or use any other *Keys() function
+      // Construct the result object for each key
+      let VarInfo = this.tableDataService.getHvalue(key);
+
+      if(VarInfo[1] == true && VarInfo[0] == 'metric'){
+        const result = {
+          'variable': key,
+          'average': this.averages[key],
+          'median': this.medians[key],
+          'variance': this.Variances[key],
+          'geometricMean': this.geoMeans[key],
+          'mode': this.modes[key],
+          'stdDev': this.stddevs[key]
+        };
+    
+        // Add the result object to the result table array
+        this.resultTable.push(result);
+      }
+    }
+
+      
+  
+    return this.resultTable;
+  }
+
+  getResKeys(){
+    return [
+      'variable',
+      'average',
+      'median',
+      'variance',
+      'geometricMean',
+      'mode',
+      'stdDev'
+    ]
+  }
+  
 
 }
 

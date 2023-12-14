@@ -46,39 +46,26 @@
     
 </div>
 
-<div class="tutText">4. View Results</div>
-<div class="smalltitle">average</div>
-<div *ngFor="let key of getAverageKeys()">
-  {{ key }} : {{ averages[key] }}
+
+
+
+<div class="tutText">3. View Results</div>
+<div class="tableContainer">
+  <table>
+    <thead>
+      <tr>
+        <td *ngFor="let key of getResKeys(); let i = index">
+          <div class="tableCell">{{key}}</div>
+        </td>
+      </tr>
+    </thead>
+   <tbody>
+    <tr *ngFor="let row of createResultTable(); let i = index" >
+      <td *ngFor="let key of getResKeys(); let i = index">
+        <div class="tableCell">{{row[key]}}</div>
+      </td>
+    </tr>
+   </tbody>
+  </table>
 </div>
 
-<div class="smalltitle">Median</div>
-<div *ngFor="let key of getMedianKeys()">
-  {{ key }} : {{ medians[key] }}
-</div>
-
-
-<div class="smalltitle">Variance</div>
-<div *ngFor="let key of getVarianceKeys()">
-  {{ key }} : {{ Variances[key] }}
-</div>
-
-
-
-<div class="smalltitle">Geometric Mean</div>
-<div *ngFor="let key of getgeoMeanKeys()">
-  {{ key }} : {{ geoMeans[key] }}
-</div>
-
-
-<div class="smalltitle">highest occurences / modes</div>
-<div *ngFor="let key of getModeKeys()">
-  {{ key }} : {{ modes[key] }}
-</div>
-
-
-
-<div class="smalltitle">Standarddeviation / modes</div>
-<div *ngFor="let key of getStdKeys()">
-  {{ key }} : {{ stddevs[key] }}
-</div>
