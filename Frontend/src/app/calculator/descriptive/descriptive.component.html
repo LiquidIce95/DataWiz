@@ -1,10 +1,10 @@
-<div>
+<div class="tableAppContainer">
   <div class="tutText">3. Select Inputs</div>
 
   <div>
-      <div class="smalltitle">metric variables:</div>
+      <div class="smalltitle2">metric variables:</div>
       <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-        <div *ngIf="tableDataService.getHvalue(key)[0] === 'metric'">
+        <div class="bodyHorizontal2" *ngIf="tableDataService.getHvalue(key)[0] === 'metric'">
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
@@ -16,9 +16,9 @@
     </div>    
     
     <div>
-      <div class="smalltitle">ordinal variables:</div>
+      <div class="smalltitle2">ordinal variables:</div>
       <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-        <div *ngIf="tableDataService.getHvalue(key)[0]  === 'ordinal'">
+        <div class="bodyHorizontal2" *ngIf="tableDataService.getHvalue(key)[0]  === 'ordinal'">
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
@@ -30,9 +30,9 @@
     </div>
     
     <div>
-      <div class="smalltitle">nominal variables:</div>
+      <div class="smalltitle2">nominal variables:</div>
       <ng-container *ngFor="let key of tableDataService.getKeys(); let i = index">
-        <div *ngIf="tableDataService.getHvalue(key)[0]  === 'nominal'">
+        <div class="bodyHorizontal2" *ngIf="tableDataService.getHvalue(key)[0]  === 'nominal'">
           <input type="checkbox" 
                  #inputElem
                  [value]="key" 
@@ -43,29 +43,32 @@
       </ng-container>
     </div>
     
+
+
+    <div class="tutText">3. View Results</div>
+    <div class="tableContainer">
+      <table>
+        <thead>
+          <tr>
+            <td *ngFor="let key of getResKeys(); let i = index">
+              <div class="tableCell">{{key}}</div>
+            </td>
+          </tr>
+        </thead>
+       <tbody>
+        <tr *ngFor="let row of createResultTable(); let i = index" >
+          <td *ngFor="let key of getResKeys(); let i = index">
+            <div class="tableCell">{{row[key]}}</div>
+          </td>
+        </tr>
+       </tbody>
+      </table>
+    </div>
     
 </div>
 
 
 
 
-<div class="tutText">3. View Results</div>
-<div class="tableContainer">
-  <table>
-    <thead>
-      <tr>
-        <td *ngFor="let key of getResKeys(); let i = index">
-          <div class="tableCell">{{key}}</div>
-        </td>
-      </tr>
-    </thead>
-   <tbody>
-    <tr *ngFor="let row of createResultTable(); let i = index" >
-      <td *ngFor="let key of getResKeys(); let i = index">
-        <div class="tableCell">{{row[key]}}</div>
-      </td>
-    </tr>
-   </tbody>
-  </table>
-</div>
+
 

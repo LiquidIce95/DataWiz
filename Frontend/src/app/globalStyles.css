@@ -27,6 +27,15 @@
     
 }
 
+.bodyHorizontal2{
+  flex-direction: row;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: max-content;
+  
+}
+
 .title{
     display: block;
     font-size: 10vh;
@@ -94,6 +103,19 @@
     border-radius: 2vw;
     padding-left: 1vw;
     padding-right: 1vw;
+  }
+
+  .smalltitle2{
+    font-family: 'Calibri';
+    position: relative;
+    flex-basis: auto;
+    display: block;
+
+    background-color: rgb(225, 208, 132);
+    border-radius: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    width: max-content;
   }
 
   .tutText{

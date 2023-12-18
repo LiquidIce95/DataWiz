@@ -1,0 +1,88 @@
+table {
+    font-family: 'Calibri';
+    border-collapse: collapse;
+    background-color: white;
+    max-width: 80vw; /* Limit the table's maximum width to 50vw */
+    min-width: 60vw;
+    max-height: 60vh; /* Limit the table's maximum height to 50vh */
+    overflow: scroll;
+  }
+  
+  td, th {
+    border: 1px solid #ddd; /* Cell border style */
+    padding: 8px; /* Cell padding */
+    position: relative; /* Make sure inputs fit within cells */
+    min-width: 10vw;
+  }
+  
+  input { 
+    width: 100%; /* Take up the entire cell width */
+    border: none; /* Remove the default input border */
+    padding: 0; /* Remove input padding */
+    margin: 0; /* Remove input margin */
+    box-sizing: border-box; /* Ensure input doesn't overflow cell */
+  }
+  
+
+.tableContainer{
+    overflow: scroll;
+    overflow-x: scroll;
+    max-width: 80vw;
+    max-height: 60vh;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.tableAppContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    max-width: 90vw;
+    max-height: 60vh;
+}
+
+
+.tableActions{
+    font-family: 'Calibri';
+    font-size: 2vh;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    justify-content: space-between;
+    width: 60vw;
+
+    max-height: 60vh;
+    
+    
+
+}
+
+.tableActionsText{
+    position: relative;
+    flex-basis: auto;
+    display: block;
+
+    background-color: rgb(225, 208, 132);
+    border-radius: 2vw;
+    padding-left: 1vw;
+    padding-right: 1vw;
+
+}
+
+.addColumnIcon {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  right: 10px; /* Adjust the right position as needed */
+  cursor: pointer;
+  color: #007bff; /* Adjust the color as needed */
+  font-size: 20px; /* Adjust the font size as needed */
+  display: block  ;
+}
+
+
+
