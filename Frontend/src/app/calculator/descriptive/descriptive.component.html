@@ -64,6 +64,42 @@
        </tbody>
       </table>
     </div>
+
+
+    <div class="tutText">4. export Results</div>
+
+    <div > 
+      <div class="smalltitle2">1. Select delimiter for Export file</div>
+      <select #selectElem (change)="setDelimiter(selectElem.value)">
+          <option value=",">Comma (,)</option>
+          <option value=";">Semicolon (;)</option>
+          <option value="\t">Tab (\t)</option>
+          <option value=":">Colon (:)</option>
+          <option value="|">Pipe (|)</option>
+          <option value=" ">Space (" ")</option>
+          <option value="\n">New Line (\n)</option>
+      </select>
+        
+      <!-- Input for user-specified delimiter -->
+      <input 
+      class="width10" type="text" #customDelimiterInput 
+      (input)="setDelimiter(customDelimiterInput.value)" 
+      placeholder="Enter custom delimiter">
+        
+
+      <div class="smalltitle2">2. Select Format type</div>
+      <select #selectElem (change)="setFormType(selectElem.value)">
+          <option value="1">
+              headers are in top row, data is below
+          </option>
+          <option value="2">
+              headers are in left most column, data is on the right
+          </option>
+
+      </select>
+      <div  class="clickable" (click)="auxiliaryService.exportToCSV(prepareExportData(),this)">export table as CSV</div>
+
+  </div>
     
 </div>
 

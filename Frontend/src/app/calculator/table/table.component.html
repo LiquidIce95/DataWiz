@@ -3,7 +3,7 @@
     <input class="hidden" type="file" #fileInput (change)="importFile($event)" accept=".csv">
     <div class="window" *ngIf="IEwindow"> 
         <div class="clickable" (click)="toggleImportExportWin()">🗙</div>
-        <div class="clickable" (click)="exportToCSV()">export table as CSV</div>
+        <div class="clickable" (click)="auxiliaryService.exportToCSV(prepareExportData(),this)">export table as CSV</div>
         <div>1. Select delimiter for import file</div>
         <select #selectElem (change)="setDelimiter(selectElem.value)">
             <option value=",">Comma (,)</option>

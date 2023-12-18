@@ -61,36 +61,17 @@ export class TableComponent{
     this.FormType = FormType;
   }
 
-  exportToCSV() {
+  prepareExportData(){
     // Prepare the CSV data
     const headerRow = this.tableDataService.getKeys().join(',');
     const csvRows = this.tableDataService.getTableData().map(row => {
       return this.tableDataService.getKeys().map(header => row[header]).join(',');
     });
 
-
-    // Combine header and rows into a single CSV string
-    const csvData = [headerRow, ...csvRows].join('\n');
-
-    // Create a Blob with the CSV data
-    const blob = new Blob([csvData], { type: 'text/csv' });
-
-    // Create a URL for the blob
-    const url = window.URL.createObjectURL(blob);
-
-    // Create an anchor element for downloading
-    const a = this.renderer.createElement('a');
-    this.renderer.setAttribute(a, 'href', url);
-    this.renderer.setAttribute(a, 'download', 'tableData.csv'); // Specify the file name here
-
-    // Trigger a click event on the anchor element
-    this.renderer.appendChild(document.body, a);
-    a.click();
-
-    // Clean up
-    this.renderer.removeChild(document.body, a);
-    window.URL.revokeObjectURL(url);
+    return [headerRow,csvRows];
   }
+
+  
 
   // closes or opens the exportwindow
   toggleImportExportWin(){

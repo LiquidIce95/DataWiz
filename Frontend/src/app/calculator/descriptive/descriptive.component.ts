@@ -16,6 +16,36 @@ export class DescriptiveComponent {
 
   resultTable: { [key: string]: any }[] = [];
 
+  /**
+   * delimiter for the conversion into the tableHeader data
+   */
+  delimiter : string = ',';
+
+  /**
+   * specifies which format the input data has
+   */
+  FormType : string = "0";
+
+  /**
+   * setter for this.delimiter
+   * @param delimiter delimiter for input data
+   */
+  setDelimiter(delimiter: string) {
+    this.delimiter = delimiter;
+  }
+  
+  /**
+   * 
+   * @param FormType alignment of headers and data in the file
+   */
+  setFormType(FormType : string){
+    this.FormType = FormType;
+  }
+
+  prepareExportData(){
+    
+    return [];
+  }
   
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
   /**
