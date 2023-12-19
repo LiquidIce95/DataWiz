@@ -45,6 +45,25 @@ fdescribe('DescriptiveComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('prepareExportData',()=>{
+    it('income and age',()=>{
+      component.tableDataService['tableHeaders']['income'][1] = true;
+      component.tableDataService['tableHeaders']['age'][1] = true;
+
+      component.createResultTable();
+      let result = component.prepareExportData();
+      
+      let expectedHeaders = component.computations.join(',');
+      let expectedRows = [
+        'age,27.5,27.5,6.25,27.386127875258307,25,2.5',
+        'income,50,50,2500,0,0,50'
+      ]
+
+      expect(result[0]).toEqual(expectedHeaders);
+      expect(result[1]).toEqual(expectedRows);
+    });
+  });
+
   describe('getAverages()',()=>{
     it('compute average of income',()=>{
       component.tableDataService['tableHeaders']['income'][1] = true;

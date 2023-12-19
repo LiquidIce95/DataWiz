@@ -87,16 +87,6 @@
       placeholder="Enter custom delimiter">
         
 
-      <div class="smalltitle2">2. Select Format type</div>
-      <select #selectElem (change)="setFormType(selectElem.value)">
-          <option value="1">
-              headers are in top row, data is below
-          </option>
-          <option value="2">
-              headers are in left most column, data is on the right
-          </option>
-
-      </select>
       <div  class="clickable" (click)="auxiliaryService.exportToCSV(prepareExportData(),this)">export table as CSV</div>
 
   </div>

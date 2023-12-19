@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Renderer2 } from '@angular/core';
 import { TableDataService } from '../../services/table.service';
 import * as simpleStats from 'simple-statistics';
 import { AuxiliaryService } from 'src/app/services/auxiliary.service';
@@ -12,10 +12,10 @@ import { AuxiliaryService } from 'src/app/services/auxiliary.service';
 
 })
 export class DescriptiveComponent {
-  constructor(public tableDataService: TableDataService, public auxiliaryService : AuxiliaryService) {}
+  constructor(private renderer: Renderer2,public tableDataService: TableDataService, public auxiliaryService : AuxiliaryService) {}
 
   resultTable: { [key: string]: any }[] = [];
-
+  computations : string[] = ['variable','average','median','variance','geometricMean','mode','stdDev'];
   /**
    * delimiter for the conversion into the tableHeader data
    */
@@ -34,17 +34,24 @@ export class DescriptiveComponent {
     this.delimiter = delimiter;
   }
   
-  /**
-   * 
-   * @param FormType alignment of headers and data in the file
-   */
-  setFormType(FormType : string){
-    this.FormType = FormType;
-  }
 
   prepareExportData(){
-    
-    return [];
+
+    let csvRows = [];
+
+
+    for( let comp of this.resultTable){
+      let row = [];
+      for(let key in comp){
+        row.push(comp[key]);
+      }
+      csvRows.push(row.join(','));
+    }
+
+    console.log(this.computations);
+    console.log(csvRows);
+
+    return [this.computations.join(','),csvRows];
   }
   
   // AVERAGE COMPUTATION------------------------------------------------------------------------------
